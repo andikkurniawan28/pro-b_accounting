@@ -3,12 +3,13 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\Account;
-use App\Models\AccountGroup;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Account;
+use App\Models\Setting;
 use Illuminate\Support\Str;
+use App\Models\AccountGroup;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        Setting::insert([
+            ["app_name" => "Pro-B Accounting", "company_name" => Str::title(str_replace('_', ' ', 'pg_kebon_agung'))],
+        ]);
+
         Role::insert([
             ["name" => ucwords(str_replace('_', ' ', 'admin'))],
             ["name" => ucwords(str_replace('_', ' ', 'user'))],
@@ -36,76 +42,90 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Account::insert([
-            // Kelompok Akun Kas dan Setara Kas
+            // Cash and Cash Equivalents Accounts Group
             [
                 'account_group_id' => 1, // Asset
-                'name' => 'Kas',
+                'code' => '101',
+                'name' => 'Cash',
                 'normal_balance' => 'Debit',
             ],
             [
                 'account_group_id' => 1,
+                'code' => '102',
                 'name' => 'Bank',
                 'normal_balance' => 'Debit',
             ],
             [
                 'account_group_id' => 1,
-                'name' => 'Deposito',
+                'code' => '103',
+                'name' => 'Deposit',
                 'normal_balance' => 'Debit',
             ],
-            // Kelompok Akun Piutang
+            // Accounts Receivable Group
             [
                 'account_group_id' => 1, // Asset
-                'name' => 'Piutang Usaha',
+                'code' => '104',
+                'name' => 'Accounts Receivable',
                 'normal_balance' => 'Debit',
             ],
             [
                 'account_group_id' => 1,
-                'name' => 'Piutang Lain-lain',
+                'code' => '105',
+                'name' => 'Other Receivables',
                 'normal_balance' => 'Debit',
             ],
-            // Kelompok Akun Hutang
+            // Liabilities Accounts Group
             [
                 'account_group_id' => 2, // Liability
-                'name' => 'Hutang Usaha',
+                'code' => '201',
+                'name' => 'Accounts Payable',
                 'normal_balance' => 'Credit',
             ],
             [
                 'account_group_id' => 2,
-                'name' => 'Hutang Bank',
+                'code' => '202',
+                'name' => 'Bank Loan',
                 'normal_balance' => 'Credit',
             ],
             [
                 'account_group_id' => 2,
-                'name' => 'Hutang Lain-lain',
+                'code' => '203',
+                'name' => 'Other Liabilities',
                 'normal_balance' => 'Credit',
             ],
-            // Kelompok Akun Modal
+            // Equity Accounts Group
             [
                 'account_group_id' => 3, // Equity
-                'name' => 'Modal Pemilik',
+                'code' => '301',
+                'name' => 'Owner\'s Equity',
                 'normal_balance' => 'Credit',
             ],
             [
                 'account_group_id' => 3,
-                'name' => 'Modal Saham',
+                'code' => '302',
+                'name' => 'Share Capital',
                 'normal_balance' => 'Credit',
             ],
-            // Kelompok Akun Pendapatan
+            // Revenue Accounts Group
             [
                 'account_group_id' => 4, // Revenue
-                'name' => 'Pendapatan Penjualan',
+                'code' => '401',
+                'name' => 'Sales Revenue',
                 'normal_balance' => 'Credit',
             ],
             [
                 'account_group_id' => 4,
-                'name' => 'Pendapatan Jasa',
+                'code' => '402',
+                'name' => 'Service Revenue',
                 'normal_balance' => 'Credit',
             ],
             [
                 'account_group_id' => 4,
-                'name' => 'Pendapatan Lain-lain',
+                'code' => '403',
+                'name' => 'Other Revenue',
                 'normal_balance' => 'Credit',
             ],
         ]);
+
     }
 }

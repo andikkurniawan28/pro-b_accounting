@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\AccountGroupController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AccountGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,4 @@ Route::resource('/role', RoleController::class)->middleware(['auth']);
 Route::resource('/user', UserController::class)->middleware(['auth']);
 Route::resource('/account_group', AccountGroupController::class)->middleware(['auth']);
 Route::resource('/account', AccountController::class)->middleware(['auth']);
+Route::resource('/journal', JournalController::class)->middleware(['auth']);

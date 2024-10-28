@@ -40,8 +40,9 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'account_group_id' => 'required|exists:account_groups,id', // Validate account_group_id to ensure it exists in the account_groups table
-            'name' => 'required|string|max:255',
+            'account_group_id' => 'required|exists:account_groups,id',
+            'name' => 'required|string|max:255|unique:accounts,name',
+            'code' => 'required|string|max:255|unique:accounts,code',
         ]);
 
         Account::create([
@@ -68,7 +69,8 @@ class AccountController extends Controller
     {
         $request->validate([
             'account_group_id' => 'required|exists:account_groups,id',
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:accounts,name,' . $account->id,
+            'code' => 'required|string|max:255|unique:accounts,code,' . $account->id,
         ]);
 
         $data = $request->all();

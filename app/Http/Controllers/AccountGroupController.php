@@ -35,7 +35,7 @@ class AccountGroupController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:account_groups,name',
         ]);
 
         AccountGroup::create($request->all());
@@ -56,7 +56,7 @@ class AccountGroupController extends Controller
     public function update(Request $request, AccountGroup $account_group)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:account_groups,name,' . $account_group->id,
         ]);
 
         $account_group->update($request->all());

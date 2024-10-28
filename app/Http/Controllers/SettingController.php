@@ -12,7 +12,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        //
+        return view('setting.index');
     }
 
     /**
@@ -28,7 +28,9 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $setting = Setting::get()->first();
+        $setting->update($request->all());
+        return redirect()->route('setting.index')->with('success', 'Setting has been updated.');
     }
 
     /**

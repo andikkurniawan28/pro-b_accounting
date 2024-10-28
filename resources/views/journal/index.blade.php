@@ -1,27 +1,30 @@
 @extends('template.master')
 
 @section('title')
-    {{ ucwords(str_replace('_', ' ', 'account')) }}
+    {{ ucwords(str_replace('_', ' ', 'journal')) }}
 @endsection
 
 @section('content')
     <h1 class="h3 mb-4 text-gray-800">@yield('title')</h1>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta date="csrf-token" content="{{ csrf_token() }}">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="card-body">
                 <div class="btn-group" role="group" aria-label="manage">
-                    <a href="{{ route('account.create') }}" class="btn btn-sm btn-primary">Create</a>
+                    <a href="{{ route('journal.create') }}" class="btn btn-sm btn-primary">Create</a>
                 </div>
                 <div class="table-responsive">
                     <br>
-                    <table class="table table-bordered table-hovered" id="account_table" width="100%">
+                    <table class="table table-bordered table-hovered" id="journal_table" width="100%">
                         <thead>
                             <tr>
+                                <th>{{ strtoupper(str_replace('_', ' ', 'id')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'code')) }}</th>
-                                <th>{{ ucwords(str_replace('_', ' ', 'account_group')) }}</th>
-                                <th>{{ ucwords(str_replace('_', ' ', 'name')) }}</th>
-                                <th>{{ ucwords(str_replace('_', ' ', 'normal_balance')) }}</th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'date')) }}</th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'debit')) }}</th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'credit')) }}</th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'user')) }}</th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'timestamp')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'action')) }}</th>
                             </tr>
                         </thead>
@@ -35,7 +38,7 @@
 @section('additional_script')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#account_table').DataTable({
+            $('#journal_table').DataTable({
                 layout: {
                     bottomStart: {
                         buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5'],
@@ -43,35 +46,50 @@
                 },
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('account.index') }}",
+                ajax: "{{ route('journal.index') }}",
                 order: [
                     [0, 'desc']
                 ],
                 columns: [
                     {
+                        data: 'id',
+                        date: 'id'
+                    },
+                    {
                         data: 'code',
-                        name: 'code'
+                        date: 'code'
                     },
                     {
-                        data: 'account_group_id',
-                        name: 'account_group.name'
+                        data: 'date',
+                        date: 'date'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'debit',
+                        name: 'debit',
+                        render: $.fn.dataTable.render.number(',', '.', 0, '')
                     },
                     {
-                        data: 'normal_balance',
-                        name: 'normal_balance'
+                        data: 'credit',
+                        name: 'credit',
+                        render: $.fn.dataTable.render.number(',', '.', 0, '')
+                    },
+                    {
+                        data: 'user_id',
+                        date: 'user.name'
+                    },
+                    {
+                        data: 'created_at',
+                        date: 'created_at'
                     },
                     {
                         data: null,
-                        name: 'actions',
+                        date: 'actions',
                         render: function(data, type, row) {
                             return `
                                 <div class="btn-group" role="group" aria-label="manage">
-                                    <a href="{{ url('account') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>
-                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-name="${row.id}">Delete</button>
+                                    <a href="{{ url('journal') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>
+                                    <a href="{{ url('journal') }}/${row.id}" class="btn btn-info btn-sm">View</a>
+                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-date="${row.id}">Delete</button>
                                 </div>
                             `;
                         }
@@ -82,8 +100,8 @@
             // Event delegation for delete buttons
             $(document).on('click', '.delete-btn', function(event) {
                 event.preventDefault();
-                const accountId = $(this).data('id');
-                const csrfToken = $('meta[name="csrf-token"]').attr('content');
+                const journalId = $(this).data('id');
+                const csrfToken = $('meta[date="csrf-token"]').attr('content');
 
                 Swal.fire({
                     title: 'Are you sure?',
@@ -97,18 +115,17 @@
                     if (result.isConfirmed) {
                         const form = $('<form>', {
                             method: 'POST',
-                            action: `{{ url('account') }}/${accountId}`
+                            action: `{{ url('journal') }}/${journalId}`
                         });
-
                         $('<input>', {
                             type: 'hidden',
-                            name: '_method',
+                            name: '_method', // Ubah date menjadi name
                             value: 'DELETE'
                         }).appendTo(form);
 
                         $('<input>', {
                             type: 'hidden',
-                            name: '_token',
+                            name: '_token', // Ubah date menjadi name
                             value: csrfToken
                         }).appendTo(form);
 

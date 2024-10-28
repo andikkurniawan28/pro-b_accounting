@@ -6,7 +6,7 @@
                 {{-- <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div> --}}
-                <div class="sidebar-brand-text mx-3">Pro-B</div>
+                <div class="sidebar-brand-text mx-3">{{ $setting->app_name }}</div>
             </a>
 
             <!-- Divider -->
@@ -55,7 +55,7 @@
                 </a>
                 <div id="transaction" class="collapse" aria-labelledby="transaction" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="#">{{ ucwords(str_replace('_', ' ', 'journal')) }}</a>
+                        <a class="collapse-item" href="{{ route('journal.index') }}">{{ ucwords(str_replace('_', ' ', 'journal')) }}</a>
                         <a class="collapse-item" href="#">{{ ucwords(str_replace('_', ' ', 'ledger')) }}</a>
                     </div>
                 </div>

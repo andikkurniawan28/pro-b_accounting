@@ -40,11 +40,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'role_id' => 'required|exists:roles,id', // Validate role_id to ensure it exists in the roles table
+            'role_id' => 'required|exists:roles,id',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email', // Ensure the email is unique
-            'password' => 'required|string|min:8', // Password must be at least 8 characters
-            'is_active' => 'boolean', // Validate is_active as a boolean
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'is_active' => 'boolean',
         ]);
 
         User::create([

@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('app_name')->default('Pro-B Accounting');
+            $table->string('company_name')->default('PT. Kebon Agung');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 
