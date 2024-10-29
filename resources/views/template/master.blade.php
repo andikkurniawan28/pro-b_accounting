@@ -61,7 +61,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>{{ $setting->app_name }} by &copy; Andik Kurniawan</span>
+                        <a href="https://wa.me/6285733465399" target="_blank">Andik Kurniawan</a>
                     </div>
                 </div>
             </footer>
@@ -122,10 +122,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
 
     {{-- Easy Number Separator --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-number-separator/1.0.0/easy-number-separator.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-number-separator/1.0.0/easy-number-separator.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/gh/amiryxe/easy-number-separator/easy-number-separator.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
+            easyNumberSeparator({
+                    selector: '.number-separator',
+                    separator: '{{ $setting->thousand_separator }}',
+                    decimalSeparator: '{{ $setting->decimal_separator }}',
+                });
 
             @if (session('success'))
                 Swal.fire({

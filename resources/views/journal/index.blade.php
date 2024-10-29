@@ -21,8 +21,8 @@
                                 <th>{{ strtoupper(str_replace('_', ' ', 'id')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'code')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'date')) }}</th>
-                                <th>{{ ucwords(str_replace('_', ' ', 'debit')) }}</th>
-                                <th>{{ ucwords(str_replace('_', ' ', 'credit')) }}</th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'debit')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'credit')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'user')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'timestamp')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'action')) }}</th>
@@ -66,12 +66,12 @@
                     {
                         data: 'debit',
                         name: 'debit',
-                        render: $.fn.dataTable.render.number(',', '.', 0, '')
+                        render: $.fn.dataTable.render.number('{{ $setting->thousand_separator }}', '{{ $setting->decimal_separator }}', 2, '')
                     },
                     {
                         data: 'credit',
                         name: 'credit',
-                        render: $.fn.dataTable.render.number(',', '.', 0, '')
+                        render: $.fn.dataTable.render.number('{{ $setting->thousand_separator }}', '{{ $setting->decimal_separator }}', 2, '')
                     },
                     {
                         data: 'user_id',
@@ -88,7 +88,7 @@
                             return `
                                 <div class="btn-group" role="group" aria-label="manage">
                                     <a href="{{ url('journal') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>
-                                    <a href="{{ url('journal') }}/${row.id}" class="btn btn-info btn-sm">View</a>
+                                    <a href="{{ url('journal') }}/${row.id}" target="_blank" class="btn btn-info btn-sm">View</a>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-date="${row.id}">Delete</button>
                                 </div>
                             `;

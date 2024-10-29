@@ -1,128 +1,158 @@
-@extends('template.master')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title')
-    {{ ucwords(str_replace('_', ' ', 'view_journal')) }}
-@endsection
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ENV("APP_NAME") }}</title>
+    <link href="/sbadmin2/css/invoice.css" rel="stylesheet">
+</head>
+<body>
+    <div>
+        <div class="py-4">
+            <div class="px-14 py-6">
+                <table class="w-full border-collapse border-spacing-0">
+                    <tbody>
+                        <tr>
+                            <td class="w-full align-top">
+                                <div>
+                                    <img src="https://raw.githubusercontent.com/templid/email-templates/main/templid-dynamic-templates/invoice-02/brand-sample.png"
+                                        class="h-12" />
+                                </div>
+                            </td>
 
-@section('content')
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('journal.index') }}">{{ ucwords(str_replace('_', ' ', 'journal')) }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
-            </ol>
-        </nav>
+                            <td class="align-top">
+                                <div class="text-sm">
+                                    <table class="border-collapse border-spacing-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="border-r pr-4">
+                                                    <div>
+                                                        <p class="whitespace-nowrap text-slate-400 text-right">Date</p>
+                                                        <p class="whitespace-nowrap font-bold text-main text-right">
+                                                            {{ date('d F Y', strtotime($journal->date)) }}</p>
+                                                    </div>
+                                                </td>
+                                                <td class="pl-4">
+                                                    <div>
+                                                        <p class="whitespace-nowrap text-slate-400 text-right">Journal #
+                                                        </p>
+                                                        <p class="whitespace-nowrap font-bold text-main text-right">
+                                                            {{ $journal->code }}</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">@yield('title')</h5>
-                        <div>
-                            <button class="btn btn-success" id="print-button">Print</button>
-                            <button class="btn btn-primary" id="pdf-button">Convert to PDF</button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label">
-                                {{ ucwords(str_replace('_', ' ', 'code')) }}:
-                            </label>
-                            <div class="col-sm-10">
-                                <span>{{ $journal->code }}</span>
-                            </div>
-                        </div>
+            <div class="bg-slate-100 px-14 py-6 text-sm">
+                <table class="w-full border-collapse border-spacing-0">
+                    <tbody>
+                        <tr>
+                            <td class="w-1/2 align-top">
+                                <div class="text-sm text-neutral-600">
+                                    <p class="font-bold">{{ $setting->company_name }}</p>
+                                    <p>Number: {{ $setting->company_phone }}</p>
+                                    <p>Email: {{ $setting->company_email }}</p>
+                                    <p>{{ $setting->company_street }}</p>
+                                    <p>{{ $setting->company_city_and_province }}</p>
+                                    <p>{{ $setting->company_country }}</p>
+                                </div>
+                            </td>
+                            <td class="w-1/2 align-top text-right">
+                                <div class="text-sm text-neutral-600">
 
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label">
-                                {{ ucwords(str_replace('_', ' ', 'date')) }}:
-                            </label>
-                            <div class="col-sm-10">
-                                <span>{{ date("d-m-Y", strtotime($journal->date)) }}</span>
-                            </div>
-                        </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                        <div class="row mb-3">
-                            <div class="col-sm-12">
-                                <table class="table table-bordered" id="journal-details-table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 25%;">Account</th>
-                                            <th style="width: 25%;">Description</th>
-                                            <th style="width: 15%;">Debit</th>
-                                            <th style="width: 15%;">Credit</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($journal->journal_entry as $detail)
-                                        <tr>
-                                            <td>{{ $detail->account->name }}</td>
-                                            <td>{{ $detail->description }}</td>
-                                            <td>{{ number_format($detail->debit, 0) }}</td>
-                                            <td>{{ number_format($detail->credit, 0) }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+            <div class="px-14 py-10 text-sm text-neutral-700">
+                <table class="w-full border-collapse border-spacing-0">
+                    <thead>
+                        <tr>
+                            <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">#</td>
+                            <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">
+                                {{ ucwords(str_replace('_', ' ', 'code')) }}</td>
+                            <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">
+                                {{ ucwords(str_replace('_', ' ', 'account')) }}</td>
+                            <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">
+                                {{ ucwords(str_replace('_', ' ', 'description')) }}</td>
+                            <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">
+                                {{ ucwords(str_replace('_', ' ', 'debit')) }}<sub>({{ $setting->currency->symbol }})</sub>
+                            </td>
+                            <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">
+                                {{ ucwords(str_replace('_', ' ', 'credit')) }}<sub>({{ $setting->currency->symbol }})</sub>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($journal->journal_entry as $entry)
+                            <tr>
+                                <td class="border-b py-3 pl-3">{{ $loop->iteration }}</td>
+                                <td class="border-b py-3 pl-2">{{ $entry->account->code }}</td>
+                                <td class="border-b py-3 pl-2">{{ $entry->account->name }}</td>
+                                <td class="border-b py-3 pl-2 text-right">{{ $entry->description }}</td>
+                                <td class="border-b py-3 pl-2 text-center">
+                                    {{ $entry->debit == 0 ? '-' : number_format($entry->debit, 2, $setting->decimal_separator, $setting->thousand_separator) }}
+                                </td>
+                                <td class="border-b py-3 pl-2 text-center">
+                                    {{ $entry->credit == 0 ? '-' : number_format($entry->credit, 2, $setting->decimal_separator, $setting->thousand_separator) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td class="bg-main p-3" colspan="4">
+                                <div class="whitespace-nowrap font-bold text-white">
+                                    Total:</div>
+                            </td>
+                            <td class="bg-main p-3 text-center">
+                                <div class="whitespace-nowrap font-bold text-white">
+                                    {{ number_format($journal->debit, 2, $setting->decimal_separator, $setting->thousand_separator) }}
+                                </div>
+                            </td>
+                            <td class="bg-main p-3 text-center">
+                                <div class="whitespace-nowrap font-bold text-white">
+                                    {{ number_format($journal->credit, 2, $setting->decimal_separator, $setting->thousand_separator) }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                                <table class="table table-bordered mt-4">
-                                    <thead>
-                                        <tr>
-                                            <th>Total Debit</th>
-                                            <th>Total Credit</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <span>{{ number_format($journal->journal_entry->sum('debit'), 0) }}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{ number_format($journal->journal_entry->sum('credit'), 0) }}</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="px-14 text-sm text-neutral-700">
+                <!-- <p class="text-main font-bold">PAYMENT DETAILS</p>
+                <p>Banks of Banks</p>
+                <p>Bank/Sort Code: 1234567</p>
+                <p>Account Number: 123456678</p>
+                <p>Payment Reference: BRA-00335</p> -->
+            </div>
+
+            <div class="px-14 py-10 text-sm text-neutral-700">
+                <p class="text-main font-bold">Notes</p>
+                <p class="italic">Recorded by {{ $journal->user->name }} on {{ $journal->created_at }} ({{ $journal->id }}).</p>
+                </dvi>
+
+                <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
+                    {{ $setting->company_name }}
+                    <span class="text-slate-300 px-2">|</span>
+                    {{ $setting->company_email }}
+                    <span class="text-slate-300 px-2">|</span>
+                    {{ $setting->company_phone }}
+                    <span class="text-slate-300 px-2">|</span>
+                    <button onclick="window.print()" class="px-4 py-2 bg-blue-500 text-black rounded">Print</button>
+                </footer>
             </div>
         </div>
-    </div>
+</body>
 
-    @section('additional_script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-        document.getElementById('print-button').addEventListener('click', function() {
-            window.print();
-        });
-
-        document.getElementById('pdf-button').addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            doc.text('Journal Invoice', 14, 20);
-            doc.text(`Code: ${{{ $journal->code }}}`, 14, 30);
-            doc.text(`Date: ${{{ $journal->date }}}`, 14, 40);
-
-            const columns = ["Account", "Description", "Debit", "Credit"];
-            const rows = {{ json_encode($journal->journal_entry->map(function ($detail) {
-                return [
-                    $detail->account->name,
-                    $detail->description,
-                    number_format($detail->debit, 0),
-                    number_format($detail->credit, 0),
-                ];
-            })) }};
-
-            doc.autoTable({
-                head: [columns],
-                body: rows,
-            });
-
-            doc.save(`journal_${{{ $journal->code }}}.pdf`);
-        });
-    </script>
-    @endsection
-@endsection
+</html>

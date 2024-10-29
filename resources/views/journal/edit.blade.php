@@ -38,12 +38,13 @@
                                     {{ ucwords(str_replace('_', ' ', 'date')) }}
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="date" class="form-control" id="date" name="date" value="{{ $journal->date }}" required>
+                                    <input type="date" class="form-control" id="date" name="date" value="{{ date('Y-m-d', strtotime($journal->date)) }}" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-sm-12">
+                                    <div class="table-responsive">
                                     <table class="table table-bordered" id="journal-details-table">
                                         <thead>
                                             <tr>
@@ -69,10 +70,20 @@
                                                     <input type="text" name="details[{{ $index }}][description]" class="form-control" placeholder="Description" value="{{ $detail->description }}" required>
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="details[{{ $index }}][debit]" class="form-control debit" step="0.01" value="{{ $detail->debit }}" required>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">{{ $setting->currency->symbol }}</span>
+                                                        </div>
+                                                        <input type="text" name="details[{{ $index }}][debit]" class="form-control debit number-separator" step="0.01" value="{{ number_format($detail->debit, 2, $setting->decimal_separator, $setting->thousand_separator) }}" required>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="details[{{ $index }}][credit]" class="form-control credit" step="0.01" value="{{ $detail->credit }}" required>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">{{ $setting->currency->symbol }}</span>
+                                                        </div>
+                                                        <input type="text" name="details[{{ $index }}][credit]" class="form-control credit number-separator" step="0.01" value="{{ number_format($detail->credit, 2, $setting->decimal_separator, $setting->thousand_separator) }}" required>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-danger remove-row">Remove</button>
@@ -81,9 +92,11 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    </div>
 
                                     <button type="button" id="add-row" class="btn btn-success mt-3">Add Row</button>
 
+                                    <div class="table-responsive">
                                     <table class="table table-bordered mt-4">
                                         <thead>
                                             <tr>
@@ -94,14 +107,25 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" id="total-debit" name="debit" class="form-control" readonly>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">{{ $setting->currency->symbol }}</span>
+                                                        </div>
+                                                        <input type="text" id="total-debit" name="debit" class="form-control" readonly>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="total-credit" name="credit" class="form-control" readonly>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">{{ $setting->currency->symbol }}</span>
+                                                        </div>
+                                                        <input type="text" id="total-credit" name="credit" class="form-control" readonly>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    </div>
 
                                     <button type="submit" class="btn btn-primary mt-3" id="submit-button" disabled>Update</button>
                                 </div>
@@ -127,14 +151,35 @@
                 }
 
                 initializeSelect2();
+                updateTotals();
 
                 function updateTotals() {
                     let totalDebit = 0;
                     let totalCredit = 0;
-                    document.querySelectorAll('.debit').forEach(input => totalDebit += parseFloat(input.value) || 0);
-                    document.querySelectorAll('.credit').forEach(input => totalCredit += parseFloat(input.value) || 0);
-                    document.getElementById('total-debit').value = totalDebit.toFixed(2);
-                    document.getElementById('total-credit').value = totalCredit.toFixed(2);
+
+                    // Ambil pemisah dari setting
+                    const thousandSeparator = '{{ $setting->thousand_separator }}';
+                    const decimalSeparator = '{{ $setting->decimal_separator }}';
+
+                    // Hitung total debit
+                    document.querySelectorAll('.debit').forEach(input => {
+                        const value = input.value
+                            .replace(new RegExp('\\' + thousandSeparator, 'g'), '') // Hapus pemisah ribuan
+                            .replace(new RegExp('\\' + decimalSeparator, 'g'), '.'); // Ganti pemisah desimal menjadi titik
+                        totalDebit += parseFloat(value) || 0;
+                    });
+
+                    // Hitung total kredit
+                    document.querySelectorAll('.credit').forEach(input => {
+                        const value = input.value
+                            .replace(new RegExp('\\' + thousandSeparator, 'g'), '') // Hapus pemisah ribuan
+                            .replace(new RegExp('\\' + decimalSeparator, 'g'), '.'); // Ganti pemisah desimal menjadi titik
+                        totalCredit += parseFloat(value) || 0;
+                    });
+
+                    document.getElementById('total-debit').value = totalDebit.toLocaleString('{{ $setting->locale_string }}');
+                    document.getElementById('total-credit').value = totalCredit.toLocaleString('{{ $setting->locale_string }}');
+
                     document.getElementById('submit-button').disabled = !(totalDebit > 0 && totalDebit === totalCredit);
                 }
 
@@ -154,37 +199,48 @@
                                 <input type="text" name="details[${rowCount}][description]" class="form-control" placeholder="Description" required>
                             </td>
                             <td>
-                                <input type="number" name="details[${rowCount}][debit]" class="form-control debit" step="0.01" value="0" required>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">{{ $setting->currency->symbol }}</span>
+                                    </div>
+                                    <input type="text" name="details[${rowCount}][debit]" class="form-control debit number-separator" step="0.01" value="0" required>
+                                </div>
                             </td>
                             <td>
-                                <input type="number" name="details[${rowCount}][credit]" class="form-control credit" step="0.01" value="0" required>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">{{ $setting->currency->symbol }}</span>
+                                    </div>
+                                    <input type="text" name="details[${rowCount}][credit]" class="form-control credit number-separator" step="0.01" value="0" required>
+                                </div>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-danger remove-row">Remove</button>
                             </td>
-                        </tr>
-                    `;
+                        </tr>`;
                     tableBody.insertAdjacentHTML('beforeend', newRow);
                     initializeSelect2();
-                    rowCount++;
+                    easyNumberSeparator({
+                        selector: '.number-separator',
+                        separator: '{{ $setting->thousand_separator }}',
+                        decimalSeparator: '{{ $setting->decimal_separator }}',
+                    });
                     updateTotals();
+                    rowCount++;
                 });
 
-                document.querySelector('#journal-details-table').addEventListener('click', function (e) {
+                document.querySelector('#journal-details-table tbody').addEventListener('click', function (e) {
                     if (e.target.classList.contains('remove-row')) {
                         e.target.closest('tr').remove();
                         updateTotals();
                     }
                 });
 
-                document.querySelector('#journal-details-table').addEventListener('input', function (e) {
+                document.querySelector('#journal-details-table tbody').addEventListener('input', function (e) {
                     if (e.target.classList.contains('debit') || e.target.classList.contains('credit')) {
                         updateTotals();
                     }
                 });
-
-                // Set initial totals
-                updateTotals();
             });
         </script>
     @endsection

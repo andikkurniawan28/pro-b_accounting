@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
 use App\Models\Currency;
 use Illuminate\Http\Request;
 
-class SettingController extends Controller
+class CurrencyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $currencies = Currency::all();
-        return view('setting.index', compact('currencies'));
+        //
     }
 
     /**
@@ -30,15 +28,13 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        $setting = Setting::get()->first();
-        $setting->update($request->all());
-        return redirect()->route('setting.index')->with('success', 'Setting has been updated.');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Setting $setting)
+    public function show(Currency $currency)
     {
         //
     }
@@ -46,7 +42,7 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Setting $setting)
+    public function edit(Currency $currency)
     {
         //
     }
@@ -54,7 +50,7 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Setting $setting)
+    public function update(Request $request, Currency $currency)
     {
         //
     }
@@ -62,7 +58,7 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Setting $setting)
+    public function destroy(Currency $currency)
     {
         //
     }

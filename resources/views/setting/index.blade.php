@@ -34,6 +34,95 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="company_phone">
+                                    {{ ucwords(str_replace('_', ' ', 'company_phone')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="company_phone" name="company_phone" value="{{ $setting->company_phone }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="company_email">
+                                    {{ ucwords(str_replace('_', ' ', 'company_email')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="company_email" name="company_email" value="{{ $setting->company_email }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="company_street">
+                                    {{ ucwords(str_replace('_', ' ', 'company_street')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="company_street" name="company_street" value="{{ $setting->company_street }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="company_city_and_province">
+                                    {{ ucwords(str_replace('_', ' ', 'company_city_and_province')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="company_city_and_province" name="company_city_and_province" value="{{ $setting->company_city_and_province }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="company_country">
+                                    {{ ucwords(str_replace('_', ' ', 'company_country')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="company_country" name="company_country" value="{{ $setting->company_country }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="currency_id">
+                                    {{ ucwords(str_replace('_', ' ', 'main_currency')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control select2" id="currency_id" name="currency_id" required autofocus>
+                                        <option disabled>Select a currency :</option>
+                                        @foreach ($currencies as $currency)
+                                            <option value="{{ $currency->id }}" {{ $currency->id == $setting->currency_id ? 'selected' : '' }}>
+                                                {{ ucwords(str_replace('_', ' ', $currency->name)) }} -
+                                                {{ $currency->symbol }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="thousand_separator">
+                                    {{ ucwords(str_replace('_', ' ', 'thousand_separator')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="thousand_separator" name="thousand_separator" value="{{ $setting->thousand_separator }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="decimal_separator">
+                                    {{ ucwords(str_replace('_', ' ', 'decimal_separator')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="decimal_separator" name="decimal_separator" value="{{ $setting->decimal_separator }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="locale_string">
+                                    {{ ucwords(str_replace('_', ' ', 'locale_string')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="locale_string" name="locale_string" value="{{ $setting->locale_string }}" required>
+                                </div>
+                            </div>
+
                             <div class="row justify-content-end">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">Save</button>
@@ -45,4 +134,15 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('additional_script')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#currency_id').select2({
+            theme: 'bootstrap',
+            placeholder: "Select a currency"
+        });
+    });
+</script>
 @endsection

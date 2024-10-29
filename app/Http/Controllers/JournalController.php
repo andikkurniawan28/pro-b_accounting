@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Account;
 use App\Models\Journal;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -49,6 +50,17 @@ class JournalController extends Controller
      */
     public function store(Request $request)
     {
+        $setting = Setting::get()->first();
+        $request->merge([
+            'debit' => floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->debit))),
+            'credit' => floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->credit))),
+            'details' => array_map(function ($detail) use ($setting) {
+                $detail['debit'] = floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $detail['debit'])));
+                $detail['credit'] = floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $detail['credit'])));
+                return $detail;
+            }, $request->details)
+        ]);
+
         $request->request->add(["user_id" => Auth()->user()->id]);
         $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -59,8 +71,8 @@ class JournalController extends Controller
             'details' => 'required|array',
             'details.*.account_id' => 'required|exists:accounts,id',
             'details.*.description' => 'nullable|string|max:255',
-            'details.*.debit' => 'required|numeric|min:0',
-            'details.*.credit' => 'required|numeric|min:0',
+            'details.*.debit' => 'required|numeric',
+            'details.*.credit' => 'required|numeric',
         ]);
         DB::beginTransaction();
         try {
@@ -106,6 +118,17 @@ class JournalController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $setting = Setting::get()->first();
+        $request->merge([
+            'debit' => floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->debit))),
+            'credit' => floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->credit))),
+            'details' => array_map(function ($detail) use ($setting) {
+                $detail['debit'] = floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $detail['debit'])));
+                $detail['credit'] = floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $detail['credit'])));
+                return $detail;
+            }, $request->details)
+        ]);
+
         $request->validate([
             'date' => 'required|date',
             'debit' => 'required|numeric',
@@ -113,8 +136,8 @@ class JournalController extends Controller
             'details' => 'required|array',
             'details.*.account_id' => 'required|exists:accounts,id',
             'details.*.description' => 'required|string',
-            'details.*.debit' => 'required|numeric|min:0',
-            'details.*.credit' => 'required|numeric|min:0',
+            'details.*.debit' => 'required|numeric',
+            'details.*.credit' => 'required|numeric',
         ]);
 
         DB::beginTransaction();

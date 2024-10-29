@@ -50,7 +50,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaction"
                     aria-expanded="true" aria-controls="transaction">
-                    <i class="fas fa-fw fa-arrows-alt"></i>
+                    <i class="fas fa-fw fa-exchange-alt"></i>
                     <span>{{ ucwords(str_replace('_', ' ', 'transaction')) }}</span>
                 </a>
                 <div id="transaction" class="collapse" aria-labelledby="transaction" data-parent="#accordionSidebar">
@@ -64,7 +64,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#report"
                     aria-expanded="true" aria-controls="report">
-                    <i class="fas fa-fw fa-book"></i>
+                    <i class="fas fa-fw fa-file-alt"></i>
                     <span>{{ ucwords(str_replace('_', ' ', 'report')) }}</span>
                 </a>
                 <div id="report" class="collapse" aria-labelledby="report" data-parent="#accordionSidebar">
