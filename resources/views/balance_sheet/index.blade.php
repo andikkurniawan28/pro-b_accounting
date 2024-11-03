@@ -32,8 +32,6 @@
                     </div>
                 </form>
 
-                <br>
-
                 <div class="row">
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="table-responsive">
@@ -53,27 +51,6 @@
                                     <tr>
                                         <th colspan="2" class="text-right">Total</th>
                                         <th id="total-assets">0</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <div class="table-responsive">
-                            <h4>{{ ucwords(str_replace('_', ' ', 'liabilities')) }}</h4>
-                            <table class="table table-sm table-hover table-bordered" width="100%" id="liabilities-table">
-                                <thead>
-                                    <tr>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'code')) }}</th>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'name')) }}</th>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'balance')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="liabilities-body">
-                                    <!-- Data akan diisi di sini -->
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="2" class="text-right">Total</th>
-                                        <th id="total-liabilities">0</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -102,7 +79,32 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                </div>
+                <div class="row">
+                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="table-responsive">
+                            <h4>{{ ucwords(str_replace('_', ' ', 'liabilities')) }}</h4>
+                            <table class="table table-sm table-hover table-bordered" width="100%" id="liabilities-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ ucwords(str_replace('_', ' ', 'code')) }}</th>
+                                        <th>{{ ucwords(str_replace('_', ' ', 'name')) }}</th>
+                                        <th>{{ ucwords(str_replace('_', ' ', 'balance')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="liabilities-body">
+                                    <!-- Data akan diisi di sini -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2" class="text-right">Total</th>
+                                        <th id="total-liabilities">0</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="table-responsive">
                             <h4>{{ ucwords(str_replace('_', ' ', 'imbalance')) }}</h4>
                             <table class="table table-sm table-hover table-bordered" width="100%" id="imbalance-table">
@@ -114,15 +116,15 @@
                                 </thead>
                                 <tbody id="imbalance-body">
                                     <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'activa')) }}</td>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_assets')) }}</td>
                                         <td id="total-activa">0</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'passiva')) }}</td>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_liabilities_+_equities')) }}</td>
                                         <td id="total-passiva">0</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'imbalance')) }}</td>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_imbalance')) }}</td>
                                         <td id="total-imbalance">0</td>
                                     </tr>
                                 </tbody>
