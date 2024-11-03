@@ -6,10 +6,12 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Account;
+use App\Models\Journal;
 use App\Models\Setting;
 use App\Models\Currency;
 use Illuminate\Support\Str;
 use App\Models\AccountGroup;
+use App\Models\JournalEntry;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -181,6 +183,71 @@ class DatabaseSeeder extends Seeder
                 'normal_balance' => 'Credit',
             ],
         ]);
+
+        $accounts = Account::pluck('id')->toArray();
+        $users = User::pluck('id')->toArray();
+
+        // Tanggal mulai dan tanggal akhir untuk rentang
+        $startDate = \Carbon\Carbon::createFromDate(2024, 11, 1);
+        $endDate = \Carbon\Carbon::createFromDate(2024, 11, 30);
+
+        // Generate 100 journals
+        for ($i = 1; $i <= 100; $i++) {
+            // Tentukan nilai total debit dan kredit yang sama
+            $totalAmount = rand(100000, 1000000);
+
+            // Pilih tanggal acak dalam rentang yang ditentukan
+            $journalDate = $startDate->copy()->addDays(rand(0, $endDate->diffInDays($startDate)));
+
+            // Buat jurnal
+            $journal = Journal::create([
+                'user_id' => $users[array_rand($users)], // random user ID
+                'code' => 'JN' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'date' => $journalDate,
+                'debit' => $totalAmount,
+                'credit' => $totalAmount,
+                'is_closing_entry' => rand(0, 1),
+            ]);
+
+            // Hitung total debit dan kredit untuk journal entries
+            $totalDebit = 0;
+            $totalCredit = 0;
+
+            // Buat beberapa entri jurnal (misalnya, 2-4 entri)
+            $numEntries = rand(2, 4);
+            for ($j = 1; $j <= $numEntries; $j++) {
+                // Tentukan nilai acak untuk entri
+                $entryAmount = rand(10000, $totalAmount / $numEntries);
+
+                // Pilih apakah entri ini berada di debit atau credit
+                if (rand(0, 1) === 0) { // 50% chance untuk debit
+                    $entryDebit = $entryAmount;
+                    $entryCredit = 0;
+                } else { // 50% chance untuk credit
+                    $entryDebit = 0;
+                    $entryCredit = $entryAmount;
+                }
+
+                // Buat entri jurnal
+                JournalEntry::create([
+                    'journal_id' => $journal->id,
+                    'account_id' => $accounts[array_rand($accounts)], // random account
+                    'description' => 'Entry ' . $j . ' for ' . $journal->code,
+                    'debit' => $entryDebit,
+                    'credit' => $entryCredit,
+                ]);
+
+                // Update total debit dan kredit
+                $totalDebit += $entryDebit;
+                $totalCredit += $entryCredit;
+            }
+
+            // Update jurnal dengan total debit dan kredit dari entries
+            $journal->update([
+                'debit' => $totalDebit,
+                'credit' => $totalCredit,
+            ]);
+        }
 
     }
 }

@@ -39,11 +39,13 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#journal_table').DataTable({
-                layout: {
-                    bottomStart: {
-                        buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5'],
-                    },
-                },
+                dom: 'Bfrtip', // Menambahkan elemen tombol ke dalam DOM
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('journal.index') }}",

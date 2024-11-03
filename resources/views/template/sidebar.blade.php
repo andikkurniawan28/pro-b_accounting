@@ -56,7 +56,7 @@
                 <div id="transaction" class="collapse" aria-labelledby="transaction" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('journal.index') }}">{{ ucwords(str_replace('_', ' ', 'journal')) }}</a>
-                        <a class="collapse-item" href="#">{{ ucwords(str_replace('_', ' ', 'ledger')) }}</a>
+                        <a class="collapse-item" href="{{ route('ledger.index') }}">{{ ucwords(str_replace('_', ' ', 'ledger')) }}</a>
                     </div>
                 </div>
             </li>

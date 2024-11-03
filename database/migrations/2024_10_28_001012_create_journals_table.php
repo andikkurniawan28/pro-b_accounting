@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->double('debit');
             $table->double('credit');
+            $table->boolean('is_closing_entry')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
