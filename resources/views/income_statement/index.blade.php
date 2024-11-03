@@ -1,7 +1,7 @@
 @extends('template.master')
 
 @section('title')
-    {{ ucwords(str_replace('_', ' ', 'balance_sheet')) }}
+    {{ ucwords(str_replace('_', ' ', 'income_statement')) }}
 @endsection
 
 @section('content')
@@ -144,77 +144,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('additional_script')
-<script>
-    $(document).ready(function() {
-        $('#filter_button').on('click', function() {
-            var period = $('#period').val();
-            var yearMonth = period.split('-'); // Split year and month
-            var year = yearMonth[0];
-            var month = yearMonth[1];
-
-            $.ajax({
-                url: "{{ route('balance_sheet.data', ['year' => ':year', 'month' => ':month']) }}".replace(':year', year).replace(':month', month),
-                method: 'GET',
-                success: function(response) {
-                    // Clear previous data
-                    $('#assets-body').empty();
-                    $('#liabilities-body').empty();
-                    $('#equities-body').empty();
-
-                    // Menampilkan data assets
-                    response.assets.forEach(function(asset) {
-                        $('#assets-body').append(`
-                            <tr>
-                                <td>${asset.code}</td>
-                                <td>${asset.name}</td>
-                                <td>${asset.balance}</td>
-                            </tr>
-                        `);
-                    });
-                    $('#total-assets').text(response.totals.assets); // Total from API response
-
-                    // Menampilkan data liabilities
-                    response.liabilities.forEach(function(liability) {
-                        $('#liabilities-body').append(`
-                            <tr>
-                                <td>${liability.code}</td>
-                                <td>${liability.name}</td>
-                                <td>${liability.balance}</td>
-                            </tr>
-                        `);
-                    });
-                    $('#total-liabilities').text(response.totals.liabilities); // Total from API response
-
-                    // Menampilkan data equities
-                    response.equities.forEach(function(equity) {
-                        $('#equities-body').append(`
-                            <tr>
-                                <td>${equity.code}</td>
-                                <td>${equity.name}</td>
-                                <td>${equity.balance}</td>
-                            </tr>
-                        `);
-                    });
-                    $('#total-equities').text(response.totals.equities); // Total from API response
-
-                    // Menampilkan data imbalance
-                    $('#total-activa').text(response.totals.assets);
-                    $('#total-passiva').text(response.totals.passiva);
-                    $('#total-imbalance').text(response.totals.imbalance);
-                    $('#total-liabilities2').text(response.totals.liabilities); // Total from API response
-                    $('#total-equities2').text(response.totals.equities); // Total from API response
-
-                    // Update the sum of the imbalance total
-                    // $('#total-imbalance-sum').text(parseFloat(response.totals.assets) + parseFloat(response.totals.passiva) + parseFloat(response.totals.imbalance));
-                },
-                error: function(xhr) {
-                    console.error('Error fetching data:', xhr);
-                }
-            });
-        });
-    });
-</script>
 @endsection
