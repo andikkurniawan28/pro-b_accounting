@@ -35,8 +35,8 @@
                 <div class="row">
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="table-responsive">
-                            <h4>{{ ucwords(str_replace('_', ' ', 'assets')) }}</h4>
-                            <table class="table table-sm table-hover table-bordered" width="100%" id="assets-table">
+                            <h4>{{ ucwords(str_replace('_', ' ', 'revenues')) }}</h4>
+                            <table class="table table-sm table-hover table-bordered" width="100%" id="revenues-table">
                                 <thead>
                                     <tr>
                                         <th>{{ ucwords(str_replace('_', ' ', 'code')) }}</th>
@@ -44,13 +44,13 @@
                                         <th>{{ ucwords(str_replace('_', ' ', 'balance')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
                                     </tr>
                                 </thead>
-                                <tbody id="assets-body">
+                                <tbody id="revenues-body">
                                     <!-- Data akan diisi di sini -->
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="2" class="text-right">Total</th>
-                                        <th id="total-assets">0</th>
+                                        <th id="total-revenues">0</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -58,8 +58,8 @@
                     </div>
                     <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="table-responsive">
-                            <h4>{{ ucwords(str_replace('_', ' ', 'equities')) }}</h4>
-                            <table class="table table-sm table-hover table-bordered" width="100%" id="equities-table">
+                            <h4>{{ ucwords(str_replace('_', ' ', 'expenses')) }}</h4>
+                            <table class="table table-sm table-hover table-bordered" width="100%" id="expenses-table">
                                 <thead>
                                     <tr>
                                         <th>{{ ucwords(str_replace('_', ' ', 'code')) }}</th>
@@ -67,75 +67,15 @@
                                         <th>{{ ucwords(str_replace('_', ' ', 'balance')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
                                     </tr>
                                 </thead>
-                                <tbody id="equities-body">
+                                <tbody id="expenses-body">
                                     <!-- Data akan diisi di sini -->
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="2" class="text-right">Total</th>
-                                        <th id="total-equities">0</th>
+                                        <th id="total-expenses">0</th>
                                     </tr>
                                 </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="table-responsive">
-                            <h4>{{ ucwords(str_replace('_', ' ', 'liabilities')) }}</h4>
-                            <table class="table table-sm table-hover table-bordered" width="100%" id="liabilities-table">
-                                <thead>
-                                    <tr>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'code')) }}</th>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'name')) }}</th>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'balance')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="liabilities-body">
-                                    <!-- Data akan diisi di sini -->
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="2" class="text-right">Total</th>
-                                        <th id="total-liabilities">0</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="table-responsive">
-                            <h4>{{ ucwords(str_replace('_', ' ', 'imbalance')) }}</h4>
-                            <table class="table table-sm table-hover table-bordered" width="100%" id="imbalance-table">
-                                <thead>
-                                    <tr>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'description')) }}</th>
-                                        <th>{{ ucwords(str_replace('_', ' ', 'balance')) }}<sub>({{ $setting->currency->symbol }})</sub></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="imbalance-body">
-                                    <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'total_assets')) }}</td>
-                                        <td id="total-activa">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'total_liabilities')) }}</td>
-                                        <td id="total-liabilities2">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'total_equities')) }}</td>
-                                        <td id="total-equities2">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'total_liabilities_+_equities')) }}</td>
-                                        <td id="total-passiva">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ ucwords(str_replace('_', ' ', 'total_imbalance')) }}</td>
-                                        <td id="total-imbalance">0</td>
-                                    </tr>
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -144,4 +84,55 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('additional_script')
+<script>
+    $(document).ready(function() {
+        $('#filter_button').on('click', function() {
+            var period = $('#period').val();
+            var yearMonth = period.split('-'); // Split year and month
+            var year = yearMonth[0];
+            var month = yearMonth[1];
+
+            $.ajax({
+                url: "{{ route('income_statement.data', ['year' => ':year', 'month' => ':month']) }}".replace(':year', year).replace(':month', month),
+                method: 'GET',
+                success: function(response) {
+                    // Clear previous data
+                    $('#revenues-body').empty();
+                    $('#expenses-body').empty();
+
+                    // Menampilkan data revenues
+                    response.revenues.forEach(function(revenue) {
+                        $('#revenues-body').append(`
+                            <tr>
+                                <td>${revenue.code}</td>
+                                <td>${revenue.name}</td>
+                                <td>${revenue.balance}</td>
+                            </tr>
+                        `);
+                    });
+                    $('#total-revenues').text(response.totals.revenues); // Total from API response
+
+                    // Menampilkan data expenses
+                    response.expenses.forEach(function(expense) {
+                        $('#expenses-body').append(`
+                            <tr>
+                                <td>${expense.code}</td>
+                                <td>${expense.name}</td>
+                                <td>${expense.balance}</td>
+                            </tr>
+                        `);
+                    });
+                    $('#total-expenses').text(response.totals.expenses); // Total from API response
+
+                },
+                error: function(xhr) {
+                    console.error('Error fetching data:', xhr);
+                }
+            });
+        });
+    });
+</script>
 @endsection

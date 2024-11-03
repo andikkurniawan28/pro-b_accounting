@@ -70,7 +70,7 @@
                 <div id="report" class="collapse" aria-labelledby="report" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('balance_sheet.index') }}">{{ ucwords(str_replace('_', ' ', 'balance_sheet')) }}</a>
-                        <a class="collapse-item" href="#">{{ ucwords(str_replace('_', ' ', 'income_statement')) }}</a>
+                        <a class="collapse-item" href="{{ route('income_statement.index') }}">{{ ucwords(str_replace('_', ' ', 'income_statement')) }}</a>
                         <a class="collapse-item" href="#">{{ ucwords(str_replace('_', ' ', 'cash_flow')) }}</a>
                     </div>
                 </div>

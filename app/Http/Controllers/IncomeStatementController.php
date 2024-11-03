@@ -8,32 +8,27 @@ use App\Models\Setting;
 use App\Models\JournalEntry;
 use Illuminate\Http\Request;
 
-class BalanceSheetController extends Controller
+class IncomeStatementController extends Controller
 {
     public function index(){
-        return view('balance_sheet.index');
+        return view('income_statement.index');
     }
 
     public function data($year, $month) {
         $setting = Setting::first();
 
         $data = [
-            'assets' => [],
-            'liabilities' => [],
-            'equities' => [],
+            'revenues' => [],
+            'expenses' => [],
             'totals' => [
-                'assets' => 0,
-                'liabilities' => 0,
-                'equities' => 0,
-                'passiva' => 0,
-                'imbalance' => 0,
+                'revenues' => 0,
+                'expenses' => 0,
             ]
         ];
 
         $account_groups = [
-            'assets' => Account::where('account_group_id', 1)->get(),
-            'liabilities' => Account::where('account_group_id', 2)->get(),
-            'equities' => Account::where('account_group_id', 3)->get(),
+            'revenues' => Account::where('account_group_id', 4)->get(),
+            'expenses' => Account::where('account_group_id', 5)->get(),
         ];
 
         foreach ($account_groups as $group_key => $group) {
@@ -48,9 +43,6 @@ class BalanceSheetController extends Controller
                 $data[$group_key][] = $account;
             }
         }
-
-        $data['totals']['passiva'] = $data['totals']['liabilities'] + $data['totals']['equities'];
-        $data['totals']['imbalance'] = $data['totals']['assets'] - $data['totals']['passiva'];
 
         foreach ($data['totals'] as $key => $total) {
             $data['totals'][$key] = $this->formatNumber($total, $setting);

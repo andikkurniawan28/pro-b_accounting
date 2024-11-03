@@ -104,7 +104,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div class="table-responsive">
                             <h4>{{ ucwords(str_replace('_', ' ', 'imbalance')) }}</h4>
                             <table class="table table-sm table-hover table-bordered" width="100%" id="imbalance-table">

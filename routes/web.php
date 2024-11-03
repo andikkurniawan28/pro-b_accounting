@@ -10,6 +10,7 @@ use App\Http\Controllers\JournalController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AccountGroupController;
 use App\Http\Controllers\BalanceSheetController;
+use App\Http\Controllers\IncomeStatementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +42,5 @@ Route::get('/ledger', [LedgerController::class, 'index'])->name('ledger.index')-
 Route::get('/ledger/data/{account_id}/{start_date}/{end_date}', [LedgerController::class, 'getData'])->name('ledger.data');
 Route::get('/balance_sheet', [BalanceSheetController::class, 'index'])->name('balance_sheet.index')->middleware(['auth']);
 Route::get('/balance_sheet/data/{year}/{month}', [BalanceSheetController::class, 'data'])->name('balance_sheet.data');
+Route::get('/income_statement', [IncomeStatementController::class, 'index'])->name('income_statement.index')->middleware(['auth']);
+Route::get('/income_statement/data/{year}/{month}', [IncomeStatementController::class, 'data'])->name('income_statement.data');
