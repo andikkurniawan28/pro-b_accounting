@@ -51,7 +51,7 @@
                             <br>
                             <div class="btn-group" role="group" aria-label="Button group">
                                 <a id="filter_button" class="btn btn-primary text-white">Filter</a>
-                                <button type="submit" class="btn btn-secondary text-white">Posting</button>
+                                <!-- <button type="submit" class="btn btn-secondary text-white">Posting</button> -->
                             </div>
                         </div>
                     </div>

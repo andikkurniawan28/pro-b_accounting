@@ -9,6 +9,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AccountGroupController;
+use App\Http\Controllers\BalanceSheetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,5 @@ Route::resource('/account', AccountController::class)->middleware(['auth']);
 Route::resource('/journal', JournalController::class)->middleware(['auth']);
 Route::get('/ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware(['auth']);
 Route::get('/ledger/data/{account_id}/{start_date}/{end_date}', [LedgerController::class, 'getData'])->name('ledger.data');
+Route::get('/balance_sheet', [BalanceSheetController::class, 'index'])->name('balance_sheet.index')->middleware(['auth']);
+Route::get('/balance_sheet/data/{year}/{month}', [BalanceSheetController::class, 'data'])->name('balance_sheet.data');
