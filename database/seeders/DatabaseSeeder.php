@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Account;
@@ -91,15 +92,19 @@ class DatabaseSeeder extends Seeder
         ]);
 
         AccountGroup::insert([
-            ["name" => Str::title(str_replace('_', ' ', 'asset'))],       // 1: Asset
-            ["name" => Str::title(str_replace('_', ' ', 'liability'))],   // 2: Liability
-            ["name" => Str::title(str_replace('_', ' ', 'equity'))],      // 3: Equity
-            ["name" => Str::title(str_replace('_', ' ', 'revenue'))],     // 4: Revenue
-            ["name" => Str::title(str_replace('_', ' ', 'expense'))],     // 5: Expense
+            ["name" => Str::title(str_replace('_', ' ', 'asset'))],                 // 1: Asset
+            ["name" => Str::title(str_replace('_', ' ', 'liability'))],             // 2: Liability
+            ["name" => Str::title(str_replace('_', ' ', 'equity'))],                // 3: Equity
+            ["name" => Str::title(str_replace('_', ' ', 'revenue'))],               // 4: Revenue
+            ["name" => Str::title(str_replace('_', ' ', 'cost_of_goods_sold'))],    // 5: Cost of Goods Sold (HPP)
+            ["name" => Str::title(str_replace('_', ' ', 'expense'))],               // 6: Expense
+            ["name" => Str::title(str_replace('_', ' ', 'other_income'))],          // 7: Other Income
+            ["name" => Str::title(str_replace('_', ' ', 'other_expense'))],         // 8: Other Expense
+            ["name" => Str::title(str_replace('_', ' ', 'contra_account'))],        // 9: Contra Account
         ]);
 
         Account::insert([
-            // Cash and Cash Equivalents Accounts Group
+            // Asset Accounts Group
             [
                 'account_group_id' => 1, // Asset
                 'code' => '101',
@@ -118,9 +123,8 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Deposit',
                 'normal_balance' => 'Debit',
             ],
-            // Accounts Receivable Group
             [
-                'account_group_id' => 1, // Asset
+                'account_group_id' => 1,
                 'code' => '104',
                 'name' => 'Accounts Receivable',
                 'normal_balance' => 'Debit',
@@ -128,10 +132,17 @@ class DatabaseSeeder extends Seeder
             [
                 'account_group_id' => 1,
                 'code' => '105',
-                'name' => 'Other Receivables',
+                'name' => 'Inventory',
                 'normal_balance' => 'Debit',
             ],
-            // Liabilities Accounts Group
+            [
+                'account_group_id' => 1,
+                'code' => '106',
+                'name' => 'Prepaid Expenses',
+                'normal_balance' => 'Debit',
+            ],
+
+            // Liability Accounts Group
             [
                 'account_group_id' => 2, // Liability
                 'code' => '201',
@@ -147,9 +158,16 @@ class DatabaseSeeder extends Seeder
             [
                 'account_group_id' => 2,
                 'code' => '203',
+                'name' => 'Accrued Expenses',
+                'normal_balance' => 'Credit',
+            ],
+            [
+                'account_group_id' => 2,
+                'code' => '204',
                 'name' => 'Other Liabilities',
                 'normal_balance' => 'Credit',
             ],
+
             // Equity Accounts Group
             [
                 'account_group_id' => 3, // Equity
@@ -163,6 +181,13 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Share Capital',
                 'normal_balance' => 'Credit',
             ],
+            [
+                'account_group_id' => 3,
+                'code' => '303',
+                'name' => 'Retained Earnings',
+                'normal_balance' => 'Credit',
+            ],
+
             // Revenue Accounts Group
             [
                 'account_group_id' => 4, // Revenue
@@ -179,7 +204,83 @@ class DatabaseSeeder extends Seeder
             [
                 'account_group_id' => 4,
                 'code' => '403',
-                'name' => 'Other Revenue',
+                'name' => 'Interest Revenue',
+                'normal_balance' => 'Credit',
+            ],
+
+            // Cost of Goods Sold (HPP) Accounts Group
+            [
+                'account_group_id' => 5, // Cost of Goods Sold (HPP)
+                'code' => '501',
+                'name' => 'Cost of Goods Sold',
+                'normal_balance' => 'Debit',
+            ],
+
+            // Expense Accounts Group
+            [
+                'account_group_id' => 6, // Expense
+                'code' => '601',
+                'name' => 'Salaries Expense',
+                'normal_balance' => 'Debit',
+            ],
+            [
+                'account_group_id' => 6,
+                'code' => '602',
+                'name' => 'Rent Expense',
+                'normal_balance' => 'Debit',
+            ],
+            [
+                'account_group_id' => 6,
+                'code' => '603',
+                'name' => 'Utilities Expense',
+                'normal_balance' => 'Debit',
+            ],
+            [
+                'account_group_id' => 6,
+                'code' => '604',
+                'name' => 'Depreciation Expense',
+                'normal_balance' => 'Debit',
+            ],
+
+            // Other Income Accounts Group
+            [
+                'account_group_id' => 7, // Other Income
+                'code' => '701',
+                'name' => 'Interest Income',
+                'normal_balance' => 'Credit',
+            ],
+            [
+                'account_group_id' => 7,
+                'code' => '702',
+                'name' => 'Dividend Income',
+                'normal_balance' => 'Credit',
+            ],
+
+            // Other Expense Accounts Group
+            [
+                'account_group_id' => 8, // Other Expense
+                'code' => '801',
+                'name' => 'Interest Expense',
+                'normal_balance' => 'Debit',
+            ],
+            [
+                'account_group_id' => 8,
+                'code' => '802',
+                'name' => 'Loss on Disposal of Assets',
+                'normal_balance' => 'Debit',
+            ],
+
+            // Contra Account Group
+            [
+                'account_group_id' => 9, // Contra Account
+                'code' => '901',
+                'name' => 'Accumulated Depreciation',
+                'normal_balance' => 'Credit',
+            ],
+            [
+                'account_group_id' => 9,
+                'code' => '902',
+                'name' => 'Allowance for Doubtful Accounts',
                 'normal_balance' => 'Credit',
             ],
         ]);
@@ -188,8 +289,8 @@ class DatabaseSeeder extends Seeder
         $users = User::pluck('id')->toArray();
 
         // Tanggal mulai dan tanggal akhir untuk rentang
-        $startDate = \Carbon\Carbon::createFromDate(2024, 11, 1);
-        $endDate = \Carbon\Carbon::createFromDate(2024, 11, 30);
+        $startDate = Carbon::createFromDate(2024, 11, 1);
+        $endDate = Carbon::createFromDate(2024, 11, 30);
 
         // Generate 100 journals
         for ($i = 1; $i <= 100; $i++) {

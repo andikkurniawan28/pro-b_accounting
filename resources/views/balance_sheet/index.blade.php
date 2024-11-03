@@ -206,9 +206,6 @@
                     $('#total-imbalance').text(response.totals.imbalance);
                     $('#total-liabilities2').text(response.totals.liabilities); // Total from API response
                     $('#total-equities2').text(response.totals.equities); // Total from API response
-
-                    // Update the sum of the imbalance total
-                    // $('#total-imbalance-sum').text(parseFloat(response.totals.assets) + parseFloat(response.totals.passiva) + parseFloat(response.totals.imbalance));
                 },
                 error: function(xhr) {
                     console.error('Error fetching data:', xhr);

@@ -27,7 +27,7 @@
                             <select id="account_select" class="form-control select2" name="account_id">
                                 <option value="">Select Account</option>
                                 @foreach ($accounts as $account)
-                                    <option value="{{ $account->id }}">{{ $account->name }}</option>
+                                    <option value="{{ $account->id }}">{{ $account->code }} | {{ $account->name }}</option>
                                 @endforeach
                             </select>
                         </div>

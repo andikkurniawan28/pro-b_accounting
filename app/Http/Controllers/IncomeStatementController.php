@@ -20,17 +20,31 @@ class IncomeStatementController extends Controller
         $data = [
             'revenues' => [],
             'expenses' => [],
+            'cogs' => [], // Cost of Goods Sold
+            'other_income' => [],
+            'other_expense' => [],
             'totals' => [
                 'revenues' => 0,
                 'expenses' => 0,
+                'cogs' => 0,
+                'other_income' => 0,
+                'other_expense' => 0,
+                'gross_profit' => 0,
+                'operating_profit' => 0,
+                'net_profit' => 0,
             ]
         ];
 
+        // Define account groups
         $account_groups = [
             'revenues' => Account::where('account_group_id', 4)->get(),
             'expenses' => Account::where('account_group_id', 5)->get(),
+            'cogs' => Account::where('account_group_id', 6)->get(),
+            'other_income' => Account::where('account_group_id', 7)->get(),
+            'other_expense' => Account::where('account_group_id', 8)->get(),
         ];
 
+        // Calculate each group balance
         foreach ($account_groups as $group_key => $group) {
             foreach ($group as $account) {
                 $debit = $this->getJournalSum($account->id, 'debit', $year, $month);
@@ -44,9 +58,20 @@ class IncomeStatementController extends Controller
             }
         }
 
+        // Calculate Income Statement components
+        $grossProfit = $data['totals']['revenues'] - $data['totals']['cogs'];
+        $operatingProfit = $grossProfit - $data['totals']['expenses'];
+        $netProfit = $operatingProfit + $data['totals']['other_income'] - $data['totals']['other_expense'];
+
+        // Format totals and add calculated values
         foreach ($data['totals'] as $key => $total) {
             $data['totals'][$key] = $this->formatNumber($total, $setting);
         }
+
+        // Adding calculated values for gross profit, operating profit, and net profit
+        $data['totals']['gross_profit'] = $this->formatNumber($grossProfit, $setting);
+        $data['totals']['operating_profit'] = $this->formatNumber($operatingProfit, $setting);
+        $data['totals']['net_profit'] = $this->formatNumber($netProfit, $setting);
 
         return $data;
     }
