@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -26,7 +28,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('role.create');
+        $menus = Menu::all();
+        return view('role.create', compact('menus'));
     }
 
     /**
@@ -34,11 +37,21 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255|unique:roles,name',
         ]);
 
-        Role::create($request->all());
+        $role = Role::create($validated);
+
+        if ($request->has('menu_ids')) {
+            Permission::where("role_id", $role->id)->delete();
+            $menus = $request->input('menu_ids');
+            foreach ($menus as $menu_id) {
+                if (Menu::where('id', $menu_id)->exists()) {
+                    Permission::create(['menu_id' => $menu_id, 'role_id' => $role->id]);
+                }
+            }
+        }
         return redirect()->route('role.index')->with('success', 'Role has been created.');
     }
 
@@ -47,7 +60,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('role.edit', compact('role'));
+        $menus = Menu::all();
+        $permissions = Permission::where('role_id', $role->id)->get();
+        return view('role.edit', compact('role', 'menus', 'permissions'));
     }
 
     /**
@@ -55,11 +70,22 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
         ]);
 
-        $role->update($request->all());
+        $role->update($validated);
+
+        if ($request->has('menu_ids')) {
+            Permission::where("role_id", $role->id)->delete();
+            $menus = $request->input('menu_ids');
+            foreach ($menus as $menu_id) {
+                if (Menu::where('id', $menu_id)->exists()) {
+                    Permission::create(['menu_id' => $menu_id,'role_id' => $role->id]);
+                }
+            }
+        }
+
         return redirect()->route('role.index')->with('success', 'Role has been updated.');
     }
 

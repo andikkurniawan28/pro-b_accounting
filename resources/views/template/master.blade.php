@@ -34,8 +34,12 @@
         integrity="sha512-CbQfNVBSMAYmnzP3IC+mZZmYMP2HUnVkV4+PwuhpiMUmITtSpS7Prr3fNncV1RBOnWxzz4pYQ5EAGG4ck46Oig=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    {{-- Alpine JS --}}
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    @php
+        $list_of_permission = collect($setting->permission)
+            ->pluck('menu.route')
+            ->toArray();
+    @endphp
+
 </head>
 
 <body id="page-top">

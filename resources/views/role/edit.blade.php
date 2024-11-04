@@ -31,6 +31,34 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label menu-section">{{ ucwords(str_replace('_', ' ', 'menus')) }}</label>
+                                <div class="col-sm-10 menu-section">
+                                    <!-- Checkbox Select All -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="select_all">
+                                        <label class="form-check-label" for="select_all">
+                                            Select All
+                                        </label>
+                                    </div>
+                                    <hr>
+                                    <!-- Checkbox for each menu -->
+                                    @foreach ($menus as $menu)
+                                        @php
+                                            $isChecked = $permissions->contains('menu_id', $menu->id);
+                                        @endphp
+                                        <div class="form-check">
+                                            <input class="form-check-input menu-checkbox" type="checkbox"
+                                                name="menu_ids[]" value="{{ $menu->id }}"
+                                                id="menu_{{ $menu->id }}" {{ $isChecked ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="menu_{{ $menu->id }}">
+                                                {{ $menu->name }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
                             <div class="row justify-content-end">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">Update</button>
@@ -42,4 +70,15 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('additional_script')
+    <script>
+        document.getElementById('select_all').addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('.menu-checkbox');
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = this.checked;
+            });
+        });
+    </script>
 @endsection

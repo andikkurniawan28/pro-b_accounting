@@ -4,12 +4,14 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Carbon\Carbon;
+use App\Models\Menu;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Account;
 use App\Models\Journal;
 use App\Models\Setting;
 use App\Models\Currency;
+use App\Models\Permission;
 use Illuminate\Support\Str;
 use App\Models\AccountGroup;
 use App\Models\JournalEntry;
@@ -90,6 +92,57 @@ class DatabaseSeeder extends Seeder
             ["name" => ucwords(str_replace('_', ' ', 'admin')), "email" => "admin@gmail.com", "password" => bcrypt("admin"), "is_active" => 1, "role_id" => 1],
             ["name" => ucwords(str_replace('_', ' ', 'user')), "email" => "user@gmail.com", "password" => bcrypt("user"), "is_active" => 1, "role_id" => 2],
         ]);
+
+        Menu::insert([
+            ["name" => Str::title(str_replace('_', ' ', 'view_setting')), "route" => "setting.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_setting')), "route" => "setting.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'role_list')), "route" => "role.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'create_role')), "route" => "role.create"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_role')), "route" => "role.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'edit_role')), "route" => "role.edit"],
+            ["name" => Str::title(str_replace('_', ' ', 'update_role')), "route" => "role.update"],
+            ["name" => Str::title(str_replace('_', ' ', 'delete_role')), "route" => "role.destroy"],
+            ["name" => Str::title(str_replace('_', ' ', 'user_list')), "route" => "user.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'create_user')), "route" => "user.create"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_user')), "route" => "user.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'edit_user')), "route" => "user.edit"],
+            ["name" => Str::title(str_replace('_', ' ', 'update_user')), "route" => "user.update"],
+            ["name" => Str::title(str_replace('_', ' ', 'delete_user')), "route" => "user.destroy"],
+            ["name" => Str::title(str_replace('_', ' ', 'currency_list')), "route" => "currency.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'create_currency')), "route" => "currency.create"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_currency')), "route" => "currency.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'edit_currency')), "route" => "currency.edit"],
+            ["name" => Str::title(str_replace('_', ' ', 'update_currency')), "route" => "currency.update"],
+            ["name" => Str::title(str_replace('_', ' ', 'delete_currency')), "route" => "currency.destroy"],
+            ["name" => Str::title(str_replace('_', ' ', 'account_group_list')), "route" => "account_group.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'create_account_group')), "route" => "account_group.create"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_account_group')), "route" => "account_group.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'edit_account_group')), "route" => "account_group.edit"],
+            ["name" => Str::title(str_replace('_', ' ', 'update_account_group')), "route" => "account_group.update"],
+            ["name" => Str::title(str_replace('_', ' ', 'delete_account_group')), "route" => "account_group.destroy"],
+            ["name" => Str::title(str_replace('_', ' ', 'account_list')), "route" => "account.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'create_account')), "route" => "account.create"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_account')), "route" => "account.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'edit_account')), "route" => "account.edit"],
+            ["name" => Str::title(str_replace('_', ' ', 'update_account')), "route" => "account.update"],
+            ["name" => Str::title(str_replace('_', ' ', 'delete_account')), "route" => "account.destroy"],
+            ["name" => Str::title(str_replace('_', ' ', 'journal_list')), "route" => "journal.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'create_journal')), "route" => "journal.create"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_journal')), "route" => "journal.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'edit_journal')), "route" => "journal.edit"],
+            ["name" => Str::title(str_replace('_', ' ', 'journal_detail')), "route" => "journal.show"],
+            ["name" => Str::title(str_replace('_', ' ', 'update_journal')), "route" => "journal.update"],
+            ["name" => Str::title(str_replace('_', ' ', 'delete_journal')), "route" => "journal.destroy"],
+            ["name" => Str::title(str_replace('_', ' ', 'view_ledger')), "route" => "ledger.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'view_balance_sheet')), "route" => "balance_sheet.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'view_income_statement')), "route" => "income_statement.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'view_cash_flow')), "route" => "cash_flow.index"],
+        ]);
+
+        $menus = Menu::select(['id'])->orderBy('id')->get();
+        foreach($menus as $menu){
+            Permission::insert(['menu_id' => $menu->id, 'role_id' => 1]);
+        }
 
         AccountGroup::insert([
             ["name" => Str::title(str_replace('_', ' ', 'asset')), "activity_type" => Str::title(str_replace('_', ' ', 'investing'))],                  // 1: Asset
@@ -285,7 +338,7 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-
+        /*
         $accounts = Account::pluck('id')->toArray();
         $users = User::pluck('id')->toArray();
 
@@ -352,7 +405,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-
+        */
 
     }
 }
