@@ -20,6 +20,7 @@
                             <tr>
                                 <th>{{ strtoupper(str_replace('_', ' ', 'id')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'name')) }}</th>
+                                <th>{{ ucwords(str_replace('_', ' ', 'activity_type')) }}</th>
                                 <th>{{ ucwords(str_replace('_', ' ', 'action')) }}</th>
                             </tr>
                         </thead>
@@ -53,6 +54,10 @@
                     {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'activity_type',
+                        name: 'activity_type'
                     },
                     {
                         data: null,

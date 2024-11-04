@@ -8,6 +8,8 @@ use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\CashFlowController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AccountGroupController;
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\IncomeStatementController;
@@ -23,15 +25,12 @@ use App\Http\Controllers\IncomeStatementController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('dashboard')->middleware(['auth']);
-
 // Auth
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'loginProcess'])->name('loginProcess');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/', DashboardController::class)->name('dashboard')->middleware(['auth']);
 Route::resource('/setting', SettingController::class)->middleware(['auth']);
 Route::resource('/role', RoleController::class)->middleware(['auth']);
 Route::resource('/user', UserController::class)->middleware(['auth']);
@@ -44,3 +43,5 @@ Route::get('/balance_sheet', [BalanceSheetController::class, 'index'])->name('ba
 Route::get('/balance_sheet/data/{year}/{month}', [BalanceSheetController::class, 'data'])->name('balance_sheet.data');
 Route::get('/income_statement', [IncomeStatementController::class, 'index'])->name('income_statement.index')->middleware(['auth']);
 Route::get('/income_statement/data/{year}/{month}', [IncomeStatementController::class, 'data'])->name('income_statement.data');
+Route::get('/cash_flow', [CashFlowController::class, 'index'])->name('cash_flow.index')->middleware(['auth']);
+Route::get('/cash_flow/data/{year}/{month}', [CashFlowController::class, 'data'])->name('cash_flow.data');

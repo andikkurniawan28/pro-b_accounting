@@ -92,15 +92,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         AccountGroup::insert([
-            ["name" => Str::title(str_replace('_', ' ', 'asset'))],                 // 1: Asset
-            ["name" => Str::title(str_replace('_', ' ', 'liability'))],             // 2: Liability
-            ["name" => Str::title(str_replace('_', ' ', 'equity'))],                // 3: Equity
-            ["name" => Str::title(str_replace('_', ' ', 'revenue'))],               // 4: Revenue
-            ["name" => Str::title(str_replace('_', ' ', 'cost_of_goods_sold'))],    // 5: Cost of Goods Sold (HPP)
-            ["name" => Str::title(str_replace('_', ' ', 'expense'))],               // 6: Expense
-            ["name" => Str::title(str_replace('_', ' ', 'other_income'))],          // 7: Other Income
-            ["name" => Str::title(str_replace('_', ' ', 'other_expense'))],         // 8: Other Expense
-            ["name" => Str::title(str_replace('_', ' ', 'contra_account'))],        // 9: Contra Account
+            ["name" => Str::title(str_replace('_', ' ', 'asset')), "activity_type" => Str::title(str_replace('_', ' ', 'investing'))],                  // 1: Asset
+            ["name" => Str::title(str_replace('_', ' ', 'liability')), "activity_type" => Str::title(str_replace('_', ' ', 'financing'))],              // 2: Liability
+            ["name" => Str::title(str_replace('_', ' ', 'equity')), "activity_type" => Str::title(str_replace('_', ' ', 'financing'))],                 // 3: Equity
+            ["name" => Str::title(str_replace('_', ' ', 'revenue')), "activity_type" => Str::title(str_replace('_', ' ', 'operating'))],                // 4: Revenue
+            ["name" => Str::title(str_replace('_', ' ', 'cost_of_goods_sold')), "activity_type" => Str::title(str_replace('_', ' ', 'operating'))],     // 5: Cost of Goods Sold (HPP)
+            ["name" => Str::title(str_replace('_', ' ', 'expense')), "activity_type" => Str::title(str_replace('_', ' ', 'operating'))],                // 6: Expense
+            ["name" => Str::title(str_replace('_', ' ', 'other_income')), "activity_type" => Str::title(str_replace('_', ' ', 'operating'))],           // 7: Other Income
+            ["name" => Str::title(str_replace('_', ' ', 'other_expense')), "activity_type" => Str::title(str_replace('_', ' ', 'operating'))],          // 8: Other Expense
+            ["name" => Str::title(str_replace('_', ' ', 'contra_account')), "activity_type" => null],                                                   // 9: Contra Account (tidak termasuk dalam arus kas)
         ]);
 
         Account::insert([
@@ -285,70 +285,74 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
+        /*
         $accounts = Account::pluck('id')->toArray();
         $users = User::pluck('id')->toArray();
 
-        // Tanggal mulai dan tanggal akhir untuk rentang
-        $startDate = Carbon::createFromDate(2024, 11, 1);
-        $endDate = Carbon::createFromDate(2024, 11, 30);
+        // Generate 100 journals untuk setiap bulan di tahun 2024
+        for ($month = 1; $month <= 12; $month++) {
+            // Tentukan tanggal mulai dan akhir untuk bulan tersebut
+            $startDate = Carbon::create(2024, $month, 1);
+            $endDate = $startDate->copy()->endOfMonth();
 
-        // Generate 100 journals
-        for ($i = 1; $i <= 100; $i++) {
-            // Tentukan nilai total debit dan kredit yang sama
-            $totalAmount = rand(100000, 1000000);
+            for ($i = 1; $i <= 100; $i++) {
+                // Tentukan nilai total debit dan kredit yang sama
+                $totalAmount = rand(100000, 1000000);
 
-            // Pilih tanggal acak dalam rentang yang ditentukan
-            $journalDate = $startDate->copy()->addDays(rand(0, $endDate->diffInDays($startDate)));
+                // Pilih tanggal acak dalam rentang yang ditentukan
+                $journalDate = $startDate->copy()->addDays(rand(0, $endDate->diffInDays($startDate)));
 
-            // Buat jurnal
-            $journal = Journal::create([
-                'user_id' => $users[array_rand($users)], // random user ID
-                'code' => 'JN' . str_pad($i, 4, '0', STR_PAD_LEFT),
-                'date' => $journalDate,
-                'debit' => $totalAmount,
-                'credit' => $totalAmount,
-                'is_closing_entry' => rand(0, 1),
-            ]);
-
-            // Hitung total debit dan kredit untuk journal entries
-            $totalDebit = 0;
-            $totalCredit = 0;
-
-            // Buat beberapa entri jurnal (misalnya, 2-4 entri)
-            $numEntries = rand(2, 4);
-            for ($j = 1; $j <= $numEntries; $j++) {
-                // Tentukan nilai acak untuk entri
-                $entryAmount = rand(10000, $totalAmount / $numEntries);
-
-                // Pilih apakah entri ini berada di debit atau credit
-                if (rand(0, 1) === 0) { // 50% chance untuk debit
-                    $entryDebit = $entryAmount;
-                    $entryCredit = 0;
-                } else { // 50% chance untuk credit
-                    $entryDebit = 0;
-                    $entryCredit = $entryAmount;
-                }
-
-                // Buat entri jurnal
-                JournalEntry::create([
-                    'journal_id' => $journal->id,
-                    'account_id' => $accounts[array_rand($accounts)], // random account
-                    'description' => 'Entry ' . $j . ' for ' . $journal->code,
-                    'debit' => $entryDebit,
-                    'credit' => $entryCredit,
+                // Buat jurnal
+                $journal = Journal::create([
+                    'user_id' => $users[array_rand($users)], // random user ID
+                    'code' => 'JN' . str_pad(($month - 1) * 100 + $i, 4, '0', STR_PAD_LEFT), // Code yang unik untuk setiap bulan
+                    'date' => $journalDate,
+                    'debit' => $totalAmount,
+                    'credit' => $totalAmount,
+                    'is_closing_entry' => rand(0, 1),
                 ]);
 
-                // Update total debit dan kredit
-                $totalDebit += $entryDebit;
-                $totalCredit += $entryCredit;
-            }
+                // Hitung total debit dan kredit untuk journal entries
+                $totalDebit = 0;
+                $totalCredit = 0;
 
-            // Update jurnal dengan total debit dan kredit dari entries
-            $journal->update([
-                'debit' => $totalDebit,
-                'credit' => $totalCredit,
-            ]);
+                // Buat beberapa entri jurnal (misalnya, 2-4 entri)
+                $numEntries = rand(2, 4);
+                for ($j = 1; $j <= $numEntries; $j++) {
+                    // Tentukan nilai acak untuk entri
+                    $entryAmount = rand(10000, $totalAmount / $numEntries);
+
+                    // Pilih apakah entri ini berada di debit atau credit
+                    if (rand(0, 1) === 0) { // 50% chance untuk debit
+                        $entryDebit = $entryAmount;
+                        $entryCredit = 0;
+                    } else { // 50% chance untuk credit
+                        $entryDebit = 0;
+                        $entryCredit = $entryAmount;
+                    }
+
+                    // Buat entri jurnal
+                    JournalEntry::create([
+                        'journal_id' => $journal->id,
+                        'account_id' => $accounts[array_rand($accounts)], // random account
+                        'description' => 'Entry ' . $j . ' for ' . $journal->code,
+                        'debit' => $entryDebit,
+                        'credit' => $entryCredit,
+                    ]);
+
+                    // Update total debit dan kredit
+                    $totalDebit += $entryDebit;
+                    $totalCredit += $entryCredit;
+                }
+
+                // Update jurnal dengan total debit dan kredit dari entries
+                $journal->update([
+                    'debit' => $totalDebit,
+                    'credit' => $totalCredit,
+                ]);
+            }
         }
+        */
 
     }
 }

@@ -166,6 +166,26 @@
                                 </thead>
                                 <tbody id="profit-body">
                                     <tr>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_revenues')) }}</td>
+                                        <td id="total-revenues2">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_expenses')) }}</td>
+                                        <td id="total-expenses2">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_cost_of_goods_sold')) }}</td>
+                                        <td id="total-cogs2">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_other_income')) }}</td>
+                                        <td id="total-other_income2">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ ucwords(str_replace('_', ' ', 'total_other_expense')) }}</td>
+                                        <td id="total-other_expense2">0</td>
+                                    </tr>
+                                    <tr>
                                         <td>{{ ucwords(str_replace('_', ' ', 'total_gross_profits')) }}</td>
                                         <td id="total-gross_profit">0</td>
                                     </tr>
@@ -269,6 +289,11 @@
                     $('#total-other_expense').text(response.totals.other_expense);
 
                     // Calculate profit totals
+                    $('#total-revenues2').text(response.totals.revenues);
+                    $('#total-expenses2').text(response.totals.expenses);
+                    $('#total-cogs2').text(response.totals.cogs);
+                    $('#total-other_income2').text(response.totals.other_income);
+                    $('#total-other_expense2').text(response.totals.other_expense);
                     $('#total-gross_profit').text(response.totals.gross_profit);
                     $('#total-operating_profit').text(response.totals.operating_profit);
                     $('#total-net_profit').text(response.totals.net_profit);

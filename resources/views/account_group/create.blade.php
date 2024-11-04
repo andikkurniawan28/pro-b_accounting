@@ -31,6 +31,20 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="activity_type">
+                                    {{ ucwords(str_replace('_', ' ', 'activity_type')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="activity_type" name="activity_type">
+                                        <option value="">None</option>
+                                        <option value="Investing">Investing</option>
+                                        <option value="Financing">Financing</option>
+                                        <option value="Operating">Operating</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="row justify-content-end">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">Save</button>

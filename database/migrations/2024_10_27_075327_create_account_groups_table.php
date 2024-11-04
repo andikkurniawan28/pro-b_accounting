@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('account_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('activity_type')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
