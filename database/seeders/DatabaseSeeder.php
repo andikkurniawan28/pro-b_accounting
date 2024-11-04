@@ -285,7 +285,7 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        /*
+
         $accounts = Account::pluck('id')->toArray();
         $users = User::pluck('id')->toArray();
 
@@ -352,7 +352,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-        */
+
 
     }
 }

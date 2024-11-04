@@ -97,7 +97,6 @@ class CashFlowController extends Controller
         // Loop untuk menghitung inflow dan outflow setiap bulan
         for ($month = 1; $month <= 12; $month++) {
             $data = self::calculateMonthlyCashFlow($year, $month); // Memanggil fungsi yang menghitung cash flow
-
             $monthlyData['cash_inflow'][$month - 1] = $data['totals']['operating']; // Menggunakan total inflow
             $monthlyData['cash_outflow'][$month - 1] = abs($data['totals']['financing']); // Menggunakan total outflow
         }

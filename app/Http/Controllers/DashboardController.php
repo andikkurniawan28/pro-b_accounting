@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function __invoke(Request $request)
     {
         $data = self::data();
-        // return $data;
+        //return $data;
         return view('welcome', compact('data'));
     }
 
@@ -21,9 +21,7 @@ class DashboardController extends Controller
     {
         $year = date("Y");
         $data['cash_flow'] = CashFlowController::monthlyData($year);
-        for($i = 1; $i <= 12; $i++){
-            $data['revenue_vs_expenses'][$i] = IncomeStatementController::export($year, $i);
-        }
+        $data['revenue_vs_expenses'] = IncomeStatementController::monthlyData($year);
         return $data;
     }
 }

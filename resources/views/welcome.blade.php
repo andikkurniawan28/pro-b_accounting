@@ -126,7 +126,6 @@
         });
     </script>
     <script>
-        // Dummy data for the Cash Flow Chart
         var ctx1 = document.getElementById('cashFlowChart').getContext('2d');
         var cashFlowChart = new Chart(ctx1, {
             type: 'line',
@@ -161,7 +160,6 @@
             }
         });
 
-        // Data for the Revenue vs Expenses Chart
         var ctx2 = document.getElementById('revenueExpensesChart').getContext('2d');
         var revenueExpensesChart = new Chart(ctx2, {
             type: 'bar',
@@ -173,7 +171,7 @@
                     borderColor: 'rgba(75, 192, 192, 1)',
                     data: [
                         @for ($month = 1; $month <= 12; $month++)
-                            {{ $data['revenue_vs_expenses'][$month]['totals']['all_revenue'] }},
+                            {{ $data['revenue_vs_expenses']['revenue'][$month-1] }},
                         @endfor
                     ],
                 }, {
@@ -182,7 +180,7 @@
                     borderColor: 'rgba(255, 99, 132, 1)',
                     data: [
                         @for ($month = 1; $month <= 12; $month++)
-                            {{ $data['revenue_vs_expenses'][$month]['totals']['all_expense'] }},
+                            {{ $data['revenue_vs_expenses']['expenses'][$month-1] }},
                         @endfor
                     ],
                 }]

@@ -41,6 +41,7 @@
                 </a>
                 <div id="master" class="collapse" aria-labelledby="master" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('currency.index') }}">{{ ucwords(str_replace('_', ' ', 'currency')) }}</a>
                         <a class="collapse-item" href="{{ route('account_group.index') }}">{{ ucwords(str_replace('_', ' ', 'account_group')) }}</a>
                         <a class="collapse-item" href="{{ route('account.index') }}">{{ ucwords(str_replace('_', ' ', 'account')) }}</a>
                     </div>

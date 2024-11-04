@@ -9,6 +9,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CashFlowController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AccountGroupController;
 use App\Http\Controllers\BalanceSheetController;
@@ -34,6 +35,7 @@ Route::get('/', DashboardController::class)->name('dashboard')->middleware(['aut
 Route::resource('/setting', SettingController::class)->middleware(['auth']);
 Route::resource('/role', RoleController::class)->middleware(['auth']);
 Route::resource('/user', UserController::class)->middleware(['auth']);
+Route::resource('/currency', CurrencyController::class)->middleware(['auth']);
 Route::resource('/account_group', AccountGroupController::class)->middleware(['auth']);
 Route::resource('/account', AccountController::class)->middleware(['auth']);
 Route::resource('/journal', JournalController::class)->middleware(['auth']);

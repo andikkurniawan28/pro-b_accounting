@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class CurrencyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = Currency::latest()->get();
+            return Datatables::of($data)
+                ->make(true);
+        }
+        return view('currency.index');
     }
 
     /**
@@ -20,7 +26,7 @@ class CurrencyController extends Controller
      */
     public function create()
     {
-        //
+        return view('currency.create');
     }
 
     /**
@@ -28,15 +34,13 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|string|max:255|unique:currencys,name',
+            'symbol' => 'required|string|max:255',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Currency $currency)
-    {
-        //
+        Currency::create($request->all());
+        return redirect()->route('currency.index')->with('success', 'Currency has been created.');
     }
 
     /**
@@ -44,7 +48,7 @@ class CurrencyController extends Controller
      */
     public function edit(Currency $currency)
     {
-        //
+        return view('currency.edit', compact('currency'));
     }
 
     /**
@@ -52,14 +56,22 @@ class CurrencyController extends Controller
      */
     public function update(Request $request, Currency $currency)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:currencys,name,' . $currency->id,
+            'symbol' => 'required|string|max:255',
+        ]);
+
+        $currency->update($request->all());
+        return redirect()->route('currency.index')->with('success', 'Currency has been updated.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Currency $currency)
+    public function destroy($id)
     {
-        //
+        $currency = Currency::findOrFail($id);
+        $currency->delete();
+        return redirect()->back()->with("success", "Currency has been deleted.");
     }
 }
