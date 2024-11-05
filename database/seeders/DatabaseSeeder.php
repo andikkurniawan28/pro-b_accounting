@@ -94,6 +94,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Menu::insert([
+            ["name" => Str::title(str_replace('_', ' ', 'dashboard')), "route" => "dashboard"],
             ["name" => Str::title(str_replace('_', ' ', 'view_setting')), "route" => "setting.index"],
             ["name" => Str::title(str_replace('_', ' ', 'save_setting')), "route" => "setting.store"],
             ["name" => Str::title(str_replace('_', ' ', 'role_list')), "route" => "role.index"],
@@ -145,10 +146,10 @@ class DatabaseSeeder extends Seeder
         }
 
         Permission::insert([
-            ["menu_id" => 33, "role_id" => 2],
             ["menu_id" => 34, "role_id" => 2],
             ["menu_id" => 35, "role_id" => 2],
-            ["menu_id" => 37, "role_id" => 2],
+            ["menu_id" => 36, "role_id" => 2],
+            ["menu_id" => 38, "role_id" => 2],
         ]);
 
         AccountGroup::insert([

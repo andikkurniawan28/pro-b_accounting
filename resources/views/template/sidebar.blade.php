@@ -14,12 +14,23 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('home') }}">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>{{ ucwords(str_replace('_', ' ', 'home')) }}</span></a>
+            </li>
+
+            @php
+                $permissionsNeeded = ['dashboard'];
+                $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
+            @endphp
+            @if ($hasAccess)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>{{ ucwords(str_replace('_', ' ', 'dashboard')) }}</span></a>
             </li>
+            @endif
 
             @php
                 $permissionsNeeded = ['role.index', 'user.index'];

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LedgerController;
@@ -31,7 +32,8 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'loginProcess'])->name('loginProcess');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/', DashboardController::class)->name('dashboard')->middleware(['auth']);
+Route::get('/', HomeController::class)->name('home')->middleware(['auth']);
+Route::get('/dashboard', DashboardController::class)->name('dashboard')->middleware(['auth', 'check.permission']);
 Route::resource('/setting', SettingController::class)->middleware(['auth']);
 Route::resource('/role', RoleController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/user', UserController::class)->middleware(['auth', 'check.permission']);
