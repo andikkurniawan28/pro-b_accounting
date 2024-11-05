@@ -115,6 +115,12 @@ class DatabaseSeeder extends Seeder
             ["name" => Str::title(str_replace('_', ' ', 'edit_currency')), "route" => "currency.edit"],
             ["name" => Str::title(str_replace('_', ' ', 'update_currency')), "route" => "currency.update"],
             ["name" => Str::title(str_replace('_', ' ', 'delete_currency')), "route" => "currency.destroy"],
+            ["name" => Str::title(str_replace('_', ' ', 'tax_rate_list')), "route" => "tax_rate.index"],
+            ["name" => Str::title(str_replace('_', ' ', 'create_tax_rate')), "route" => "tax_rate.create"],
+            ["name" => Str::title(str_replace('_', ' ', 'save_tax_rate')), "route" => "tax_rate.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'edit_tax_rate')), "route" => "tax_rate.edit"],
+            ["name" => Str::title(str_replace('_', ' ', 'update_tax_rate')), "route" => "tax_rate.update"],
+            ["name" => Str::title(str_replace('_', ' ', 'delete_tax_rate')), "route" => "tax_rate.destroy"],
             ["name" => Str::title(str_replace('_', ' ', 'account_group_list')), "route" => "account_group.index"],
             ["name" => Str::title(str_replace('_', ' ', 'create_account_group')), "route" => "account_group.create"],
             ["name" => Str::title(str_replace('_', ' ', 'save_account_group')), "route" => "account_group.store"],
@@ -347,72 +353,72 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        $accounts = Account::pluck('id')->toArray();
-        $users = User::pluck('id')->toArray();
+        // $accounts = Account::pluck('id')->toArray();
+        // $users = User::pluck('id')->toArray();
 
-        // Generate 100 journals untuk setiap bulan di tahun 2024
-        for ($month = 1; $month <= 12; $month++) {
-            // Tentukan tanggal mulai dan akhir untuk bulan tersebut
-            $startDate = Carbon::create(2024, $month, 1);
-            $endDate = $startDate->copy()->endOfMonth();
+        // // Generate 100 journals untuk setiap bulan di tahun 2024
+        // for ($month = 1; $month <= 12; $month++) {
+        //     // Tentukan tanggal mulai dan akhir untuk bulan tersebut
+        //     $startDate = Carbon::create(2024, $month, 1);
+        //     $endDate = $startDate->copy()->endOfMonth();
 
-            for ($i = 1; $i <= 100; $i++) {
-                // Tentukan nilai total debit dan kredit yang sama
-                $totalAmount = rand(100000, 1000000);
+        //     for ($i = 1; $i <= 100; $i++) {
+        //         // Tentukan nilai total debit dan kredit yang sama
+        //         $totalAmount = rand(100000, 1000000);
 
-                // Pilih tanggal acak dalam rentang yang ditentukan
-                $journalDate = $startDate->copy()->addDays(rand(0, $endDate->diffInDays($startDate)));
+        //         // Pilih tanggal acak dalam rentang yang ditentukan
+        //         $journalDate = $startDate->copy()->addDays(rand(0, $endDate->diffInDays($startDate)));
 
-                // Buat jurnal
-                $journal = Journal::create([
-                    'user_id' => $users[array_rand($users)], // random user ID
-                    'code' => 'JN' . str_pad(($month - 1) * 100 + $i, 4, '0', STR_PAD_LEFT), // Code yang unik untuk setiap bulan
-                    'date' => $journalDate,
-                    'debit' => $totalAmount,
-                    'credit' => $totalAmount,
-                    'is_closing_entry' => rand(0, 1),
-                ]);
+        //         // Buat jurnal
+        //         $journal = Journal::create([
+        //             'user_id' => $users[array_rand($users)], // random user ID
+        //             'code' => 'JN' . str_pad(($month - 1) * 100 + $i, 4, '0', STR_PAD_LEFT), // Code yang unik untuk setiap bulan
+        //             'date' => $journalDate,
+        //             'debit' => $totalAmount,
+        //             'credit' => $totalAmount,
+        //             'is_closing_entry' => rand(0, 1),
+        //         ]);
 
-                // Hitung total debit dan kredit untuk journal entries
-                $totalDebit = 0;
-                $totalCredit = 0;
+        //         // Hitung total debit dan kredit untuk journal entries
+        //         $totalDebit = 0;
+        //         $totalCredit = 0;
 
-                // Buat beberapa entri jurnal (misalnya, 2-4 entri)
-                $numEntries = rand(2, 4);
-                for ($j = 1; $j <= $numEntries; $j++) {
-                    // Tentukan nilai acak untuk entri
-                    $entryAmount = rand(10000, $totalAmount / $numEntries);
+        //         // Buat beberapa entri jurnal (misalnya, 2-4 entri)
+        //         $numEntries = rand(2, 4);
+        //         for ($j = 1; $j <= $numEntries; $j++) {
+        //             // Tentukan nilai acak untuk entri
+        //             $entryAmount = rand(10000, $totalAmount / $numEntries);
 
-                    // Pilih apakah entri ini berada di debit atau credit
-                    if (rand(0, 1) === 0) { // 50% chance untuk debit
-                        $entryDebit = $entryAmount;
-                        $entryCredit = 0;
-                    } else { // 50% chance untuk credit
-                        $entryDebit = 0;
-                        $entryCredit = $entryAmount;
-                    }
+        //             // Pilih apakah entri ini berada di debit atau credit
+        //             if (rand(0, 1) === 0) { // 50% chance untuk debit
+        //                 $entryDebit = $entryAmount;
+        //                 $entryCredit = 0;
+        //             } else { // 50% chance untuk credit
+        //                 $entryDebit = 0;
+        //                 $entryCredit = $entryAmount;
+        //             }
 
-                    // Buat entri jurnal
-                    JournalEntry::create([
-                        'journal_id' => $journal->id,
-                        'account_id' => $accounts[array_rand($accounts)], // random account
-                        'description' => 'Entry ' . $j . ' for ' . $journal->code,
-                        'debit' => $entryDebit,
-                        'credit' => $entryCredit,
-                    ]);
+        //             // Buat entri jurnal
+        //             JournalEntry::create([
+        //                 'journal_id' => $journal->id,
+        //                 'account_id' => $accounts[array_rand($accounts)], // random account
+        //                 'description' => 'Entry ' . $j . ' for ' . $journal->code,
+        //                 'debit' => $entryDebit,
+        //                 'credit' => $entryCredit,
+        //             ]);
 
-                    // Update total debit dan kredit
-                    $totalDebit += $entryDebit;
-                    $totalCredit += $entryCredit;
-                }
+        //             // Update total debit dan kredit
+        //             $totalDebit += $entryDebit;
+        //             $totalCredit += $entryCredit;
+        //         }
 
-                // Update jurnal dengan total debit dan kredit dari entries
-                $journal->update([
-                    'debit' => $totalDebit,
-                    'credit' => $totalCredit,
-                ]);
-            }
-        }
+        //         // Update jurnal dengan total debit dan kredit dari entries
+        //         $journal->update([
+        //             'debit' => $totalDebit,
+        //             'credit' => $totalCredit,
+        //         ]);
+        //     }
+        // }
 
 
     }

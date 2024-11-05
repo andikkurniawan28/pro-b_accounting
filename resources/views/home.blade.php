@@ -2,13 +2,15 @@
 
 @section('content')
 
+<h1 class="h3 mb-4 text-gray-800">Home</h1>
+
 <!-- Jumbotron Section -->
-<div class="jumbotron jumbotron-fluid bg-light text-center mb-4">
+{{-- <div class="jumbotron jumbotron-fluid bg-light text-center mb-4">
     <div class="container">
         <h1 class="display-4">Welcome to the {{ $setting->app_name }}</h1>
         <p class="lead">Manage your finances effectively with our comprehensive tools and features.</p>
     </div>
-</div>
+</div> --}}
 
 <div class="row">
     <!-- Dashboard -->
@@ -58,9 +60,7 @@
         </div>
     </div>
     @endif
-</div>
 
-<div class="row">
     <!-- Users -->
     @php $permissionsNeeded = ['user.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
     @if ($hasAccess)
@@ -93,6 +93,22 @@
     </div>
     @endif
 
+    <!-- Tax Rate -->
+    @php $permissionsNeeded = ['tax_rate.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
+    @if ($hasAccess)
+    <div class="col-lg-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="m-0 font-weight-bold text-primary">Tax Rate</h5>
+            </div>
+            <div class="card-body">
+                <p>Define and manage tax rates to ensure accurate calculations in transactions and reports.</p>
+                <a href="{{ route('tax_rate.index') }}" class="btn btn-primary">Manage Tax Rate</a>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Account Groups -->
     @php $permissionsNeeded = ['account_group.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
     @if ($hasAccess)
@@ -108,9 +124,7 @@
         </div>
     </div>
     @endif
-</div>
 
-<div class="row">
     <!-- Accounts -->
     @php $permissionsNeeded = ['account.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
     @if ($hasAccess)
@@ -158,9 +172,7 @@
         </div>
     </div>
     @endif
-</div>
 
-<div class="row">
     <!-- Balance Sheet -->
     @php $permissionsNeeded = ['balance_sheet.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
     @if ($hasAccess)

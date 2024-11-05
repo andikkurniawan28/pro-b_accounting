@@ -58,7 +58,7 @@
             @endif
 
             @php
-                $permissionsNeeded = ['currency.index', 'account_group.index', 'account.index'];
+                $permissionsNeeded = ['currency.index', 'tax_rate.index', 'account_group.index', 'account.index'];
                 $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
             @endphp
             @if ($hasAccess)

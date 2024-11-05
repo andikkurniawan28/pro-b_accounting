@@ -15,6 +15,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AccountGroupController;
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\IncomeStatementController;
+use App\Http\Controllers\TaxRateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::resource('/setting', SettingController::class)->middleware(['auth']);
 Route::resource('/role', RoleController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/user', UserController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/currency', CurrencyController::class)->middleware(['auth', 'check.permission']);
+Route::resource('/tax_rate', TaxRateController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/account_group', AccountGroupController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/account', AccountController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/journal', JournalController::class)->middleware(['auth', 'check.permission']);
