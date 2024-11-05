@@ -11,7 +11,10 @@
         <div class="card">
             <div class="card-body">
                 <div class="btn-group" role="group" aria-label="manage">
+                    @php $permissionsNeeded = ['user.create']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
+                    @if ($hasAccess)
                     <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary">Create</a>
+                    @endif
                 </div>
                 <div class="table-responsive">
                     <br>
@@ -35,6 +38,7 @@
 
 @section('additional_script')
     <script type="text/javascript">
+        const permissions = @json($setting->list_of_permission);
         $(document).ready(function() {
             $('#user_table').DataTable({
                 layout: {
@@ -73,12 +77,15 @@
                         data: null,
                         name: 'actions',
                         render: function(data, type, row) {
-                            return `
-                                <div class="btn-group" role="group" aria-label="manage">
-                                    <a href="{{ url('user') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>
-                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-name="${row.id}">Delete</button>
-                                </div>
-                            `;
+                            let actions = '<div class="btn-group" role="group" aria-label="manage">';
+                            if (permissions.includes('user.edit')) {
+                                actions += `<a href="{{ url('user') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>`;
+                            }
+                            if (permissions.includes('user.destroy')) {
+                                actions += `<button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-name="${row.id}">Delete</button>`;
+                            }
+                            actions += '</div>';
+                            return actions;
                         }
                     }
                 ]

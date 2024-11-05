@@ -2,9 +2,12 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}">
-                <div class="sidebar-brand-icon">
+            <a class="sidebar-brand d-flex align-items-center justify-content-left" href="{{ route('dashboard') }}">
+                <!-- <div class="sidebar-brand-icon">
                     <img src="{{ asset($setting->company_logo) }}" alt="Company Logo" style="width: 40px; height: auto;">
+                </div> -->
+                <div class="sidebar-brand-icon font-weight-bold">
+                    <h6 class="mx-3">{{ $setting->app_name }}</h6>
                 </div>
             </a>
 

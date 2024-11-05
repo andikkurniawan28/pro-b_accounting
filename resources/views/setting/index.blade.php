@@ -137,11 +137,14 @@
                                 </div>
                             </div>
 
+                            @php $permissionsNeeded = ['setting.save']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
+                            @if ($hasAccess)
                             <div class="row justify-content-end">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
+                            @endif
                         </form>
                     </div>
                 </div>

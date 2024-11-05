@@ -11,7 +11,10 @@
         <div class="card">
             <div class="card-body">
                 <div class="btn-group" role="group" aria-label="manage">
+                    @php $permissionsNeeded = ['journal.create']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
+                    @if ($hasAccess)
                     <a href="{{ route('journal.create') }}" class="btn btn-sm btn-primary">Create</a>
+                    @endif
                 </div>
                 <div class="table-responsive">
                     <br>
@@ -37,6 +40,7 @@
 
 @section('additional_script')
     <script type="text/javascript">
+        const permissions = @json($setting->list_of_permission);
         $(document).ready(function() {
             $('#journal_table').DataTable({
                 dom: 'Bfrtip', // Menambahkan elemen tombol ke dalam DOM
@@ -85,15 +89,20 @@
                     },
                     {
                         data: null,
-                        date: 'actions',
+                        name: 'actions',
                         render: function(data, type, row) {
-                            return `
-                                <div class="btn-group" role="group" aria-label="manage">
-                                    <a href="{{ url('journal') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>
-                                    <a href="{{ url('journal') }}/${row.id}" target="_blank" class="btn btn-info btn-sm">View</a>
-                                    <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-date="${row.id}">Delete</button>
-                                </div>
-                            `;
+                            let actions = '<div class="btn-group" role="group" aria-label="manage">';
+                            if (permissions.includes('journal.edit')) {
+                                actions += `<a href="{{ url('journal') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>`;
+                            }
+                            if (permissions.includes('journal.show')) {
+                                actions += `<a href="{{ url('journal') }}/${row.id}" class="btn btn-info btn-sm" target="_blank">View</a>`;
+                            }
+                            if (permissions.includes('journal.destroy')) {
+                                actions += `<button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-name="${row.id}">Delete</button>`;
+                            }
+                            actions += '</div>';
+                            return actions;
                         }
                     }
                 ]

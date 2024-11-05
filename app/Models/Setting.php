@@ -19,6 +19,9 @@ class Setting extends Model
         if(Auth()->check()) {
             $setting->user = $user;
             $setting->permissions = Permission::where("role_id", $setting->user->role_id)->with('menu')->get();
+            $setting->list_of_permission = collect($setting->permissions)
+                ->pluck('menu.route')
+                ->toArray();
         }
         return $setting;
     }

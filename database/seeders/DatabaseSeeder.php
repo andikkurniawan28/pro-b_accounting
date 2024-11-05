@@ -144,6 +144,13 @@ class DatabaseSeeder extends Seeder
             Permission::insert(['menu_id' => $menu->id, 'role_id' => 1]);
         }
 
+        Permission::insert([
+            ["menu_id" => 33, "role_id" => 2],
+            ["menu_id" => 34, "role_id" => 2],
+            ["menu_id" => 35, "role_id" => 2],
+            ["menu_id" => 37, "role_id" => 2],
+        ]);
+
         AccountGroup::insert([
             ["name" => Str::title(str_replace('_', ' ', 'asset')), "activity_type" => Str::title(str_replace('_', ' ', 'investing'))],                  // 1: Asset
             ["name" => Str::title(str_replace('_', ' ', 'liability')), "activity_type" => Str::title(str_replace('_', ' ', 'financing'))],              // 2: Liability
@@ -338,7 +345,7 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        /*
+
         $accounts = Account::pluck('id')->toArray();
         $users = User::pluck('id')->toArray();
 
@@ -405,7 +412,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-        */
+
 
     }
 }
