@@ -137,7 +137,7 @@
                                 </div>
                             </div>
 
-                            @php $permissionsNeeded = ['setting.save']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
+                            @php $permissionsNeeded = ['setting.store']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
                             @if ($hasAccess)
                             <div class="row justify-content-end">
                                 <div class="col-sm-10">
