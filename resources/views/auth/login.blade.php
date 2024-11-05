@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ ENV("APP_NAME") }}</title>
+    <title>{{ $setting->app_name }}</title>
 
     <!-- Custom fonts for this template-->
     <link href="/sbadmin2/href/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@
                             <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">{{ ENV("APP_NAME") }}</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">{{ $setting->app_name }}</h1>
                                     </div>
                                     <form class="user" action="{{ route('loginProcess') }}" method="POST">
                                         @csrf

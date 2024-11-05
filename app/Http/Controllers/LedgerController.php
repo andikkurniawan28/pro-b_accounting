@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Account;
+use App\Models\Setting;
 use App\Models\JournalEntry;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -11,8 +12,9 @@ use Yajra\DataTables\DataTables;
 class LedgerController extends Controller
 {
     public function index(Request $request) {
+        $setting = Setting::init();
         $accounts = Account::all();
-        return view("ledger.index", compact('accounts'));
+        return view("ledger.index", compact('accounts', 'setting'));
     }
 
     public function getData($accountId, $fromDatetime, $toDatetime) {

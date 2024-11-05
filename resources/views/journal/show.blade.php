@@ -15,9 +15,12 @@
                     <tbody>
                         <tr>
                             <td class="w-full align-top">
-                                <div>
+                                <!--<div>
                                     <img src="https://raw.githubusercontent.com/templid/email-templates/main/templid-dynamic-templates/invoice-02/brand-sample.png"
                                         class="h-12" />
+                                </div>-->
+                                <div>
+                                    <img src="{{ asset($setting->company_logo) }}" class="h-12" alt="Company Logo" />
                                 </div>
                             </td>
 

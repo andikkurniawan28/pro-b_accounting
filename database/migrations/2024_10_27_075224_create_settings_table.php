@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('app_name')->default('Pro-B Accounting');
             $table->string('company_name');
+            $table->string('company_logo')->nullable();
             $table->string('company_phone');
             $table->string('company_email')->nullable();
             $table->string('company_street');

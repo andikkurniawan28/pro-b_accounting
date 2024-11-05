@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use App\Models\Currency;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -13,12 +14,13 @@ class CurrencyController extends Controller
      */
     public function index(Request $request)
     {
+        $setting = Setting::init();
         if ($request->ajax()) {
             $data = Currency::latest()->get();
             return Datatables::of($data)
                 ->make(true);
         }
-        return view('currency.index');
+        return view('currency.index', compact('setting'));
     }
 
     /**
@@ -26,7 +28,8 @@ class CurrencyController extends Controller
      */
     public function create()
     {
-        return view('currency.create');
+        $setting = Setting::init();
+        return view('currency.create', compact('setting'));
     }
 
     /**
@@ -48,7 +51,8 @@ class CurrencyController extends Controller
      */
     public function edit(Currency $currency)
     {
-        return view('currency.edit', compact('currency'));
+        $setting = Setting::init();
+        return view('currency.edit', compact('currency', 'setting'));
     }
 
     /**

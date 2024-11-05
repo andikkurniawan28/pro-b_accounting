@@ -6,6 +6,7 @@ use App\Models\Setting;
 use App\Models\Permission;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $setting = Setting::init();
-        View::share('setting', $setting);
+        // $setting = Setting::init();
+        // View::share('setting', $setting);
     }
 }

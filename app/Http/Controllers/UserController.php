@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -14,6 +15,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $setting = Setting::init();
         if ($request->ajax()) {
             $data = User::with(['role'])->latest()->get();
             return Datatables::of($data)
@@ -22,7 +24,7 @@ class UserController extends Controller
                 })
                 ->make(true);
         }
-        return view('user.index');
+        return view('user.index', compact('setting'));
     }
 
     /**
@@ -30,8 +32,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $setting = Setting::init();
         $roles = Role::all();
-        return view('user.create', compact('roles'));
+        return view('user.create', compact('roles', 'setting'));
     }
 
     /**
@@ -63,8 +66,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $setting = Setting::init();
         $roles = Role::all();
-        return view('user.edit', compact('user', 'roles'));
+        return view('user.edit', compact('user', 'roles', 'setting'));
     }
 
     /**

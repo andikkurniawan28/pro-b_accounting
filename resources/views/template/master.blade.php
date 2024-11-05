@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ ENV("APP_NAME") }}</title>
+    <title>{{ $setting->app_name }}</title>
 
     <!-- Custom fonts for this template -->
     <link href="/sbadmin2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @php
-        $list_of_permission = collect($setting->permission)
+        $list_of_permission = collect($setting->permissions)
             ->pluck('menu.route')
             ->toArray();
     @endphp

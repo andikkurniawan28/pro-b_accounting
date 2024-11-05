@@ -14,13 +14,12 @@ class Setting extends Model
     protected $guarded = [];
 
     public static function init() {
+        $user = Auth::user();
         $setting = self::get()->first();
-        $permissions = Permission::where("role_id", Auth::user()->role_id)->with('menu')->get();
-        $setting->permission = $permissions;
-        /*
-        $setting->permission =
-        */
-
+        if(Auth()->check()) {
+            $setting->user = $user;
+            $setting->permissions = Permission::where("role_id", $setting->user->role_id)->with('menu')->get();
+        }
         return $setting;
     }
 

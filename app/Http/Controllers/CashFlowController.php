@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class CashFlowController extends Controller
 {
     public function index() {
-        return view('cash_flow.index');
+        $setting = Setting::init();
+        return view('cash_flow.index', compact('setting'));
     }
 
     public function data($year, $month) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Role;
+use App\Models\Setting;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -15,12 +16,13 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        $setting = Setting::init();
         if ($request->ajax()) {
             $data = Role::latest()->get();
             return Datatables::of($data)
                 ->make(true);
         }
-        return view('role.index');
+        return view('role.index', compact('setting'));
     }
 
     /**
@@ -28,8 +30,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $setting = Setting::init();
         $menus = Menu::all();
-        return view('role.create', compact('menus'));
+        return view('role.create', compact('menus', 'setting'));
     }
 
     /**
@@ -60,9 +63,10 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        $setting = Setting::init();
         $menus = Menu::all();
         $permissions = Permission::where('role_id', $role->id)->get();
-        return view('role.edit', compact('role', 'menus', 'permissions'));
+        return view('role.edit', compact('role', 'menus', 'permissions', 'setting'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -9,7 +10,8 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return view('auth.login');
+        $setting = Setting::init();
+        return view('auth.login', compact('setting'));
     }
 
     public function loginProcess(Request $request){

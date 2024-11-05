@@ -3,11 +3,8 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}">
-                {{-- <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div> --}}
-                <div class="sidebar-brand-text mx-3">
-                    {{ $setting->app_name }}
+                <div class="sidebar-brand-icon">
+                    <img src="{{ asset($setting->company_logo) }}" alt="Company Logo" style="width: 40px; height: auto;">
                 </div>
             </a>
 
@@ -21,63 +18,105 @@
                     <span>{{ ucwords(str_replace('_', ' ', 'dashboard')) }}</span></a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#access"
+            @php
+                $permissionsNeeded = ['role.index', 'user.index'];
+                $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
+            @endphp
+            @if ($hasAccess)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#access"
                     aria-expanded="true" aria-controls="access">
-                    <i class="fas fa-fw fa-door-open"></i>
-                    <span>{{ ucwords(str_replace('_', ' ', 'access')) }}</span>
-                </a>
-                <div id="access" class="collapse" aria-labelledby="access" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('role.index') }}">{{ ucwords(str_replace('_', ' ', 'role')) }}</a>
-                        <a class="collapse-item" href="{{ route('user.index') }}">{{ ucwords(str_replace('_', ' ', 'user')) }}</a>
+                        <i class="fas fa-fw fa-door-open"></i>
+                        <span>{{ ucwords(str_replace('_', ' ', 'access')) }}</span>
+                    </a>
+                    <div id="access" class="collapse" aria-labelledby="access" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @foreach ($permissionsNeeded as $permission)
+                                @if (in_array($permission, $list_of_permission))
+                                    <a class="collapse-item" href="{{ route($permission) }}">
+                                        {{ ucwords(str_replace('_', ' ', explode('.', $permission)[0])) }}
+                                    </a>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#master"
+            @php
+                $permissionsNeeded = ['currency.index', 'account_group.index', 'account.index'];
+                $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
+            @endphp
+            @if ($hasAccess)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#master"
                     aria-expanded="true" aria-controls="master">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>{{ ucwords(str_replace('_', ' ', 'master')) }}</span>
-                </a>
-                <div id="master" class="collapse" aria-labelledby="master" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('currency.index') }}">{{ ucwords(str_replace('_', ' ', 'currency')) }}</a>
-                        <a class="collapse-item" href="{{ route('account_group.index') }}">{{ ucwords(str_replace('_', ' ', 'account_group')) }}</a>
-                        <a class="collapse-item" href="{{ route('account.index') }}">{{ ucwords(str_replace('_', ' ', 'account')) }}</a>
+                        <i class="fas fa-fw fa-database"></i>
+                        <span>{{ ucwords(str_replace('_', ' ', 'master')) }}</span>
+                    </a>
+                    <div id="master" class="collapse" aria-labelledby="master" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @foreach ($permissionsNeeded as $permission)
+                                @if (in_array($permission, $list_of_permission))
+                                    <a class="collapse-item" href="{{ route($permission) }}">
+                                        {{ ucwords(str_replace('_', ' ', explode('.', $permission)[0])) }}
+                                    </a>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaction"
+            @php
+                $permissionsNeeded = ['journal.index', 'ledger.index'];
+                $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
+            @endphp
+            @if ($hasAccess)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaction"
                     aria-expanded="true" aria-controls="transaction">
-                    <i class="fas fa-fw fa-exchange-alt"></i>
-                    <span>{{ ucwords(str_replace('_', ' ', 'transaction')) }}</span>
-                </a>
-                <div id="transaction" class="collapse" aria-labelledby="transaction" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('journal.index') }}">{{ ucwords(str_replace('_', ' ', 'journal')) }}</a>
-                        <a class="collapse-item" href="{{ route('ledger.index') }}">{{ ucwords(str_replace('_', ' ', 'ledger')) }}</a>
+                        <i class="fas fa-fw fa-exchange-alt"></i>
+                        <span>{{ ucwords(str_replace('_', ' ', 'transaction')) }}</span>
+                    </a>
+                    <div id="transaction" class="collapse" aria-labelledby="transaction" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @foreach ($permissionsNeeded as $permission)
+                                @if (in_array($permission, $list_of_permission))
+                                    <a class="collapse-item" href="{{ route($permission) }}">
+                                        {{ ucwords(str_replace('_', ' ', explode('.', $permission)[0])) }}
+                                    </a>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#report"
+            @php
+                $permissionsNeeded = ['balance_sheet.index', 'income_statement.index', 'cash_flow.index'];
+                $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
+            @endphp
+            @if ($hasAccess)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#report"
                     aria-expanded="true" aria-controls="report">
-                    <i class="fas fa-fw fa-file-alt"></i>
-                    <span>{{ ucwords(str_replace('_', ' ', 'report')) }}</span>
-                </a>
-                <div id="report" class="collapse" aria-labelledby="report" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('balance_sheet.index') }}">{{ ucwords(str_replace('_', ' ', 'balance_sheet')) }}</a>
-                        <a class="collapse-item" href="{{ route('income_statement.index') }}">{{ ucwords(str_replace('_', ' ', 'income_statement')) }}</a>
-                        <a class="collapse-item" href="{{ route('cash_flow.index') }}">{{ ucwords(str_replace('_', ' ', 'cash_flow')) }}</a>
+                        <i class="fas fa-fw fa-file-alt"></i>
+                        <span>{{ ucwords(str_replace('_', ' ', 'report')) }}</span>
+                    </a>
+                    <div id="report" class="collapse" aria-labelledby="report" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            @foreach ($permissionsNeeded as $permission)
+                                @if (in_array($permission, $list_of_permission))
+                                    <a class="collapse-item" href="{{ route($permission) }}">
+                                        {{ ucwords(str_replace('_', ' ', explode('.', $permission)[0])) }}
+                                    </a>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

@@ -13,8 +13,9 @@ class SettingController extends Controller
      */
     public function index()
     {
+        $setting = Setting::init();
         $currencies = Currency::all();
-        return view('setting.index', compact('currencies'));
+        return view('setting.index', compact('currencies', 'setting'));
     }
 
     /**
@@ -31,7 +32,31 @@ class SettingController extends Controller
     public function store(Request $request)
     {
         $setting = Setting::get()->first();
-        $setting->update($request->all());
+
+        $validated = $request->validate([
+            'app_name' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'company_phone' => 'required|string|max:15',
+            'company_email' => 'required|email|max:255',
+            'company_street' => 'required|string|max:255',
+            'company_city_and_province' => 'required|string|max:255',
+            'company_country' => 'required|string|max:255',
+            'currency_id' => 'required|exists:currencies,id',
+            'thousand_separator' => 'required|string|max:1',
+            'decimal_separator' => 'required|string|max:1',
+            'locale_string' => 'required|string|max:5',
+        ]);
+
+        if ($request->hasFile('company_logo')) {
+            $image_name = time() . '.' . $request->company_logo->extension();
+            $request->company_logo->move(public_path('settings'), $image_name);
+            $validated["company_logo"] = 'settings/' . $image_name;
+            if ($setting->company_logo && file_exists(public_path($setting->company_logo))) {
+                @unlink(public_path($setting->company_logo));
+            }
+        }
+
+        Setting::whereId($setting->id)->update($validated);
         return redirect()->route('setting.index')->with('success', 'Setting has been updated.');
     }
 

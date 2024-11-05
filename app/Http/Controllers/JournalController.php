@@ -18,6 +18,7 @@ class JournalController extends Controller
      */
     public function index(Request $request)
     {
+        $setting = Setting::init();
         if ($request->ajax()) {
             $data = Journal::with(['user'])->latest()->get();
             return Datatables::of($data)
@@ -32,7 +33,7 @@ class JournalController extends Controller
                 })
                 ->make(true);
         }
-        return view('journal.index');
+        return view('journal.index', compact('setting'));
     }
 
     /**
@@ -40,9 +41,10 @@ class JournalController extends Controller
      */
     public function create()
     {
+        $setting = Setting::init();
         $code = Journal::generateCode();
         $accounts = Account::all();
-        return view('journal.create', compact('code', 'accounts'));
+        return view('journal.create', compact('code', 'accounts', 'setting'));
     }
 
     /**
@@ -104,13 +106,15 @@ class JournalController extends Controller
      */
     public function edit(Journal $journal)
     {
+        $setting = Setting::init();
         $accounts = Account::all();
-        return view('journal.edit', compact('journal', 'accounts'));
+        return view('journal.edit', compact('journal', 'accounts', 'setting'));
     }
 
     public function show(Journal $journal)
     {
-        return view('journal.show', compact('journal'));
+        $setting = Setting::init();
+        return view('journal.show', compact('journal', 'setting'));
     }
 
     /**
@@ -118,7 +122,7 @@ class JournalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $setting = Setting::get()->first();
+        $setting = Setting::init();
         $request->merge([
             'debit' => floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->debit))),
             'credit' => floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->credit))),

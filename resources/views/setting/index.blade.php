@@ -13,7 +13,7 @@
                         <h5 class="mb-0">@yield('title')</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route("setting.store") }}" method="POST">
+                        <form action="{{ route("setting.store") }}" method="POST" enctype="multipart/form-data">
                             @csrf @method("POST")
 
                             <div class="row mb-3">
@@ -31,6 +31,20 @@
                                 </label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="company_name" name="company_name" value="{{ $setting->company_name }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="company_logo">
+                                    {{ ucwords(str_replace('_', ' ', 'company_logo')) }}
+                                </label>
+                                <div class="col-sm-10">
+                                    @if($setting->company_logo)
+                                        <div class="mb-3">
+                                            <img src="{{ asset($setting->company_logo) }}" alt="Company Logo" style="max-height: 100px; max-width: 200px;">
+                                        </div>
+                                    @endif
+                                    <input type="file" class="custom-file" id="company_logo" name="company_logo" accept=".jpg, .jpeg, .png">
                                 </div>
                             </div>
 

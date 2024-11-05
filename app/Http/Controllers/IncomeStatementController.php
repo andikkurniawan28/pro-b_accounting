@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class IncomeStatementController extends Controller
 {
     public function index(){
-        return view('income_statement.index');
+        $setting = Setting::init();
+        return view('income_statement.index', compact('setting'));
     }
 
     public function data($year, $month) {

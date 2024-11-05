@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use App\Models\AccountGroup;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -13,12 +14,13 @@ class AccountGroupController extends Controller
      */
     public function index(Request $request)
     {
+        $setting = Setting::init();
         if ($request->ajax()) {
             $data = AccountGroup::latest()->get();
             return Datatables::of($data)
                 ->make(true);
         }
-        return view('account_group.index');
+        return view('account_group.index', compact('setting'));
     }
 
     /**
@@ -26,7 +28,8 @@ class AccountGroupController extends Controller
      */
     public function create()
     {
-        return view('account_group.create');
+        $setting = Setting::init();
+        return view('account_group.create', compact('setting'));
     }
 
     /**
@@ -47,7 +50,8 @@ class AccountGroupController extends Controller
      */
     public function edit(AccountGroup $account_group)
     {
-        return view('account_group.edit', compact('account_group'));
+        $setting = Setting::init();
+        return view('account_group.edit', compact('account_group', 'setting'));
     }
 
     /**

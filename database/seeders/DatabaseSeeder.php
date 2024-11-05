@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
 
         Setting::insert([
             [
-                'app_name' => 'Pro-B Accounting',
+                'app_name' => 'Pro-B',
                 'company_name' => 'PT Kebon Agung',
                 'company_phone' => '021-12345678',
                 'company_email' => 'info@kebonagung.com',
