@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('account_id')->constrained();
+            $table->text('description');
+            $table->double('amount');
+            $table->double('spent')->default(0);
+            $table->double('left')->default(0);
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamp('created_at')->useCurrent();

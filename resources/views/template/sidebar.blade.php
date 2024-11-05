@@ -83,7 +83,7 @@
             @endif
 
             @php
-                $permissionsNeeded = ['journal.index', 'ledger.index'];
+                $permissionsNeeded = ['budget.index', 'journal.index', 'ledger.index'];
                 $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
             @endphp
             @if ($hasAccess)

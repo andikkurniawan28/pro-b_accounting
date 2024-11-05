@@ -141,6 +141,26 @@
     </div>
     @endif
 
+    <!-- Budget -->
+    @php
+        $permissionsNeeded = ['budget.index'];
+        $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission);
+    @endphp
+    @if ($hasAccess)
+    <div class="col-lg-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="m-0 font-weight-bold text-primary">Budget</h5>
+            </div>
+            <div class="card-body">
+                <p>Set budgets for specific accounts, monitor spending, and track remaining amounts over defined periods.</p>
+                <a href="{{ route('budget.index') }}" class="btn btn-primary">Manage Budgets</a>
+            </div>
+        </div>
+    </div>
+    @endif
+
+
     <!-- Journals -->
     @php $permissionsNeeded = ['journal.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
     @if ($hasAccess)
