@@ -51,7 +51,7 @@
                                     {{ ucwords(str_replace('_', ' ', 'amount')) }}
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" id="amount" name="amount" value="{{ old("amount") }}" required>
+                                    <input type="text" class="form-control number-separator" id="amount" name="amount" value="{{ old("amount") }}" required>
                                 </div>
                             </div>
 
@@ -93,6 +93,11 @@
             theme: 'bootstrap',
             placeholder: "Select an account"
         });
+    });
+    easyNumberSeparator({
+        selector: '.number-separator',
+        separator: '{{ $setting->thousand_separator }}',
+        decimalSeparator: '{{ $setting->decimal_separator }}',
     });
 </script>
 @endsection

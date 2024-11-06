@@ -49,10 +49,14 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
+        $setting = Setting::init();
+        $amount = floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->amount)));
+        $request->request->add(['amount' => $amount, 'left' => $amount]);
         $validated = $request->validate([
             'account_id' => 'required|exists:accounts,id',
             'description'  => 'required|string|max:255',
             'amount'       => 'required|numeric|min:0',
+            'left'       => 'required|numeric|min:0',
             'start_date'   => 'required|date|before_or_equal:end_date',
             'end_date'     => 'required|date|after_or_equal:start_date',
         ]);
@@ -81,10 +85,15 @@ class BudgetController extends Controller
      */
     public function update(Request $request, Budget $budget)
     {
+        $setting = Setting::init();
+        $amount = floatval(str_replace($setting->decimal_separator, '.', str_replace($setting->thousand_separator, '', $request->amount)));
+        $left = $amount - $budget->spent;
+        $request->request->add(['left' => $left, 'amount' => $amount]);
         $validated = $request->validate([
             'account_id' => 'required|exists:accounts,id',
             'description'  => 'required|string|max:255',
             'amount'       => 'required|numeric|min:0',
+            'left'         => 'required|numeric|min:0',
             'start_date'   => 'required|date|before_or_equal:end_date',
             'end_date'     => 'required|date|after_or_equal:start_date',
         ]);
