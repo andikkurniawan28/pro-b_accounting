@@ -1,7 +1,7 @@
 @extends('template.master')
 
 @section('title')
-    {{ ucwords(str_replace('_', ' ', 'create_budget')) }}
+    {{ ucwords(str_replace('_', ' ', 'edit_budget')) }}
 @endsection
 
 @section('content')

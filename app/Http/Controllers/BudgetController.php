@@ -70,6 +70,12 @@ class BudgetController extends Controller
         return view('budget.edit', compact('budget', 'accounts', 'setting'));
     }
 
+    public function show(Budget $budget)
+    {
+        $setting = Setting::init();
+        return view('budget.show', compact('budget', 'setting'));
+    }
+
     /**
      * Update the specified resource in storage.
      */

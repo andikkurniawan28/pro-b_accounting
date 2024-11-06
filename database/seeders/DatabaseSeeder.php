@@ -136,6 +136,7 @@ class DatabaseSeeder extends Seeder
             ["name" => Str::title(str_replace('_', ' ', 'budget_list')), "route" => "budget.index"],
             ["name" => Str::title(str_replace('_', ' ', 'create_budget')), "route" => "budget.create"],
             ["name" => Str::title(str_replace('_', ' ', 'save_budget')), "route" => "budget.store"],
+            ["name" => Str::title(str_replace('_', ' ', 'view_budget')), "route" => "budget.show"],
             ["name" => Str::title(str_replace('_', ' ', 'edit_budget')), "route" => "budget.edit"],
             ["name" => Str::title(str_replace('_', ' ', 'update_budget')), "route" => "budget.update"],
             ["name" => Str::title(str_replace('_', ' ', 'delete_budget')), "route" => "budget.destroy"],

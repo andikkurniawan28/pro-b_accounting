@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('journal_id')->constrained()->onDelete('cascade');
             $table->foreignId('account_id')->constrained();
+            $table->foreignId('budget_id')->nullable()->constrained();
             $table->text('description');
             $table->double('debit');
             $table->double('credit');

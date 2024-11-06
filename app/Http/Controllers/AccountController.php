@@ -46,13 +46,14 @@ class AccountController extends Controller
             'account_group_id' => 'required|exists:account_groups,id',
             'name' => 'required|string|max:255|unique:accounts,name',
             'code' => 'required|string|max:255|unique:accounts,code',
+            'normal_balance' => 'required',
         ]);
-
         Account::create([
             'account_group_id' => $request->account_group_id,
+            'code' => $request->code,
             'name' => $request->name,
+            'normal_balance' => $request->normal_balance,
         ]);
-
         return redirect()->route('account.index')->with('success', 'Account has been created.');
     }
 
@@ -75,12 +76,10 @@ class AccountController extends Controller
             'account_group_id' => 'required|exists:account_groups,id',
             'name' => 'required|string|max:255|unique:accounts,name,' . $account->id,
             'code' => 'required|string|max:255|unique:accounts,code,' . $account->id,
+            'normal_balance' => 'required',
         ]);
-
         $data = $request->all();
-
         $account->update($data);
-
         return redirect()->route('account.index')->with('success', 'Account has been updated.');
     }
 

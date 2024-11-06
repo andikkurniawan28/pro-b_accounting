@@ -70,6 +70,7 @@
                     </a>
                     <div id="master" class="collapse" aria-labelledby="master" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Accounting :</h6>
                             @foreach ($permissionsNeeded as $permission)
                                 @if (in_array($permission, $list_of_permission))
                                     <a class="collapse-item" href="{{ route($permission) }}">
@@ -95,6 +96,7 @@
                     </a>
                     <div id="transaction" class="collapse" aria-labelledby="transaction" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Accounting :</h6>
                             @foreach ($permissionsNeeded as $permission)
                                 @if (in_array($permission, $list_of_permission))
                                     <a class="collapse-item" href="{{ route($permission) }}">
@@ -120,6 +122,7 @@
                     </a>
                     <div id="report" class="collapse" aria-labelledby="report" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Accounting :</h6>
                             @foreach ($permissionsNeeded as $permission)
                                 @if (in_array($permission, $list_of_permission))
                                     <a class="collapse-item" href="{{ route($permission) }}">

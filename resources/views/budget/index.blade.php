@@ -99,6 +99,9 @@
                             if (permissions.includes('budget.edit')) {
                                 actions += `<a href="{{ url('budget') }}/${row.id}/edit" class="btn btn-secondary btn-sm">Edit</a>`;
                             }
+                            if (permissions.includes('budget.show')) {
+                                actions += `<a href="{{ url('budget') }}/${row.id}" class="btn btn-info btn-sm">View</a>`;
+                            }
                             if (permissions.includes('budget.destroy')) {
                                 actions += `<button type="button" class="btn btn-danger btn-sm delete-btn" data-id="${row.id}" data-name="${row.id}">Delete</button>`;
                             }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Budget;
 use App\Models\Account;
 use App\Models\Journal;
 use App\Models\Setting;
@@ -174,6 +175,9 @@ class JournalController extends Controller
     public function destroy($id)
     {
         $journal = Journal::findOrFail($id);
+        foreach($journal->journal_entry as $journal_entry){
+            $journal_entry->delete();
+        }
         $journal->delete();
         return redirect()->back()->with("success", "Journal has been deleted.");
     }
