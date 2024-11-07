@@ -33,7 +33,7 @@
             @endif
 
             @php
-                $permissionsNeeded = ['role.index', 'user.index'];
+                $permissionsNeeded = ['role.index', 'user.index', 'activity_log.index'];
                 $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
             @endphp
             @if ($hasAccess)
@@ -58,7 +58,7 @@
             @endif
 
             @php
-                $permissionsNeeded = ['currency.index', 'tax_rate.index', 'account_group.index', 'account.index'];
+                $permissionsNeeded = ['currency.index', 'tax_rate.index', 'account_group.index', 'account.index', 'payment_term.index'];
                 $hasAccess = array_intersect($permissionsNeeded, $list_of_permission);
             @endphp
             @if ($hasAccess)

@@ -2,14 +2,39 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ActivityLog;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Journal extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected static function booted()
+    {
+        static::created(function ($journal) {
+            ActivityLog::create([
+                'user_id' => Auth()->user()->id,
+                'description' => "Journal '{$journal->code}' was created.",
+            ]);
+        });
+
+        static::updated(function ($journal) {
+            ActivityLog::create([
+                'user_id' => Auth()->user()->id,
+                'description' => "Journal '{$journal->code}' was updated.",
+            ]);
+        });
+
+        static::deleted(function ($journal) {
+            ActivityLog::create([
+                'user_id' => Auth()->user()->id,
+                'description' => "Journal '{$journal->code}' was deleted.",
+            ]);
+        });
+    }
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -21,20 +46,11 @@ class Journal extends Model
 
     public static function generateCode()
     {
-        // Prefix untuk kode jurnal
         $prefix = 'JRN';
-        // Tanggal saat ini dalam format Ymd
         $date = date('Ymd');
-        // Mengambil jurnal terakhir yang dibuat pada tanggal hari ini
         $lastJournal = self::whereDate('date', today())->latest('created_at')->first();
-
-        // Mendapatkan urutan berdasarkan ID terakhir atau mulai dari 1
         $sequence = $lastJournal ? intval(substr($lastJournal->code, -4)) + 1 : 1;
-
-        // Mengisi nol di depan hingga 4 digit
         $sequence = str_pad($sequence, 4, '0', STR_PAD_LEFT);
-
-        // Mengembalikan kode yang diformat
         return "{$prefix}-{$date}-{$sequence}";
     }
 

@@ -5,18 +5,20 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TaxRateController;
 use App\Http\Controllers\CashFlowController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\PaymentTermController;
 use App\Http\Controllers\AccountGroupController;
 use App\Http\Controllers\BalanceSheetController;
-use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\IncomeStatementController;
-use App\Http\Controllers\TaxRateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +41,12 @@ Route::get('/dashboard', DashboardController::class)->name('dashboard')->middlew
 Route::resource('/setting', SettingController::class)->middleware(['auth']);
 Route::resource('/role', RoleController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/user', UserController::class)->middleware(['auth', 'check.permission']);
+Route::resource('/activity_log', ActivityLogController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/currency', CurrencyController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/tax_rate', TaxRateController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/account_group', AccountGroupController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/account', AccountController::class)->middleware(['auth', 'check.permission']);
+Route::resource('/payment_term', PaymentTermController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/budget', BudgetController::class)->middleware(['auth', 'check.permission']);
 Route::resource('/journal', JournalController::class)->middleware(['auth', 'check.permission']);
 Route::get('/ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware(['auth']);

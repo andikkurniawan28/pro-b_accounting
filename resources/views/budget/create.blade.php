@@ -60,7 +60,7 @@
                                     {{ ucwords(str_replace('_', ' ', 'start_date')) }}
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ old("start_date") }}" required>
+                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d') }}" required>
                                 </div>
                             </div>
 
@@ -69,7 +69,7 @@
                                     {{ ucwords(str_replace('_', ' ', 'end_date')) }}
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ old("end_date") }}" required>
+                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ \Carbon\Carbon::now()->endOfMonth()->format('Y-m-d') }}" required>
                                 </div>
                             </div>
 

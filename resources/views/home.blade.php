@@ -77,6 +77,22 @@
     </div>
     @endif
 
+    <!-- Activity Log -->
+    @php $permissionsNeeded = ['activity_log.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
+    @if ($hasAccess)
+    <div class="col-lg-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="m-0 font-weight-bold text-primary">Activity Log</h5>
+            </div>
+            <div class="card-body">
+                <p>Review system activity logs to track user actions, monitor changes, and ensure data integrity.</p>
+                <a href="{{ route('activity_log.index') }}" class="btn btn-primary">View Activity Logs</a>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Currency -->
     @php $permissionsNeeded = ['currency.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
     @if ($hasAccess)
@@ -136,6 +152,22 @@
             <div class="card-body">
                 <p>Create and manage individual accounts to record transactions accurately.</p>
                 <a href="{{ route('account.index') }}" class="btn btn-primary">Manage Accounts</a>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Payment Terms -->
+    @php $permissionsNeeded = ['payment_term.index']; $hasAccess = array_intersect($permissionsNeeded, $setting->list_of_permission); @endphp
+    @if ($hasAccess)
+    <div class="col-lg-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="m-0 font-weight-bold text-primary">Payment Terms</h5>
+            </div>
+            <div class="card-body">
+                <p>Allows users to create and manage individual payment terms that define specific time frames for settling invoices.</p>
+                <a href="{{ route('payment_term.index') }}" class="btn btn-primary">Manage Payment Terms</a>
             </div>
         </div>
     </div>
